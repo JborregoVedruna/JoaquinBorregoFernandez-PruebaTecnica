@@ -8,6 +8,7 @@ on:
       - main
       - master
       - 'release/**'
+      - 'hotfix/**'
   # Se ejecuta de forma manual
   workflow_dispatch:
 
