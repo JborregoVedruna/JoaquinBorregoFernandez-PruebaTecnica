@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: loansmanager
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    # Nivel de log para el logger raíz (root), afectando a Spring y librerías externas.
+    # Solo se mostrarán mensajes de nivel INFO o superior para estos paquetes.
+    root: INFO
+    # Nivel de log específico para el paquete de tu aplicación (com.vedruna.watchlist).
+    # Se mostrarán todos los mensajes de nivel TRACE o superior, ideal para desarrollo y depuración.
+    com:
+      caixabank:
+        loansmanager: TRACE
+    # Nivel de log específico para las sentencias SQL generadas por Hibernate (debe estar show-sql: true).
+    # Se mostrarán todos los mensajes de nivel TRACE o superior, ideal para desarrollo y depuración.
+    org:
+      hibernate:
+        SQL: DEBUG
+      springframework:
+        cache: DEBUG
+
+  pattern:
+    # Define el patrón de formato para los logs que se muestran en la consola.
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    # Define el patrón de formato para los logs que se escriben en el archivo (logs/app.log).
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+springdoc:
+  # Asegura que el JSON de la especificación esté bien ordenado.
+  writer-with-order-by-keys: true
+
+management:
+  endpoints:
+    web:
+      # Configura qué endpoints de Actuator se exponen a través de la web (HTTP).
+      exposure:
+        # "*" (todo): Expone todos los endpoints disponibles, como /actuator/health, /actuator/info, /actuator/metrics, etc.
+        include: "*"
+  endpoint:
+    # Configura el detalle de la información mostrada por el endpoint /actuator/health.
+    health:
+      # "always" (siempre): Muestra los detalles de los componentes de salud a todos los usuarios.
+      show-details: always
+  metrics:
+    distribution:
+      # Habilita la generación de percentiles de histograma para las métricas
+      # de las solicitudes del servidor HTTP (http.server.requests).
+      # Esto es útil para calcular latencias más precisas.
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
