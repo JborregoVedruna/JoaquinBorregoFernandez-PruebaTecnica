@@ -4,27 +4,83 @@
 @customer_path = /api/v1/customer
 @manager_path = /api/v1/manager
 @system_path = /api/v1/system
+@auth_path = /api/v1/auth
+@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIxMTExMTExMUgiLCJzdWIiOiJtYW5hZ2VyIiwiaWF0IjoxNzY5MzU5MDgwLCJleHAiOjE3NjkzNTkyNjB9.LkewIJE9P51zklYgSCtKlg284kMxBkN0nANj74U8OPw
+@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzY5MzU3NDYyLCJleHAiOjE3Njk5NjIyNjJ9.PaW0K3yWVuJsoxx53hOrp5y49Re-zN0GrWKXH57jVsM
+
+### Registrar usuario
+POST {{base_url}}{{auth_path}}/register
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "Abcd1234!",
+    "userDni": "33333333P"
+}
+
+### Login
+POST {{base_url}}{{auth_path}}/login
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "Abcd1234!"
+}
+
+### /me
+GET {{base_url}}{{auth_path}}/me
+Authorization: Bearer {{token}}
+
+### /refresh
+POST {{base_url}}{{auth_path}}/refresh
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "refreshToken": "{{refreshToken}}"
+}
 
 ### Realizar solicitud
 POST {{base_url}}{{customer_path}}/
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "applicantName": "John Doe",
     "requestedAmount": 1000,
     "currency": "EUR",
     "applicantDni": "12345678Z"
 }
 
+### Login System
+POST {{base_url}}{{auth_path}}/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "Abcd1234!"
+}
+
 ### Obtener todas las solicitudes
 GET {{base_url}}{{system_path}}/
+Authorization: Bearer {{token}}
+
+### Login Manager
+POST {{base_url}}{{auth_path}}/login
+Content-Type: application/json
+
+{
+    "username": "manager",
+    "password": "Abcd1234!"
+}
 
 ### Obtener solicitud por id
 GET {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
+Authorization: Bearer {{token}}
 
 ### Actualizar estado de solicitud
 PATCH {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "status": "REJECTED"

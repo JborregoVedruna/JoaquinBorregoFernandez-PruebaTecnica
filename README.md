@@ -5,6 +5,7 @@ Este proyecto es una API REST para la gestión de solicitudes de préstamos, con
 ## ✨ Características Principales
 
 - 🏗️ **Arquitectura Hexagonal**: Desacoplamiento total entre dominio e infraestructura.
+- 🔐 **Seguridad Avanzada**: Autenticación JWT con rotación de tokens (Access & Refresh).
 - ⚡ **Alto Rendimiento**: Caché de segundo nivel orientada a optimizar lecturas frecuentes.
 - 🧪 **Calidad Garantizada**: Cobertura de tests unitarios superior al 85%.
 - 🗄️ **Control de Versiones de BD**: Gestión evolutiva y automatizada del esquema de datos.
@@ -34,11 +35,11 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 
 1.  **Descargar la imagen** desde el registro de GitHub:
     ```bash
-    docker pull docker pull ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:master
+    docker pull ghcr.io/jborregovedruna/pruebatech:master
     ```
-2.  **Ejecutar el contenedor**:
+2.  **Ejecutar el contenedor (última versión)**:
     ```bash
-    docker run -p 8080:8080 docker pull ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:master
+    docker run -p 8080:8080 ghcr.io/jborregovedruna/pruebatech:master
     ```
 
 ### Pasos para probar la API independientemente de su ejecución
@@ -50,6 +51,11 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 5.  **Consola de Base de Datos (H2)**:
     - Acceso en: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
     - JDBC URL: `jdbc:h2:mem:caixabank` | Usuario: `sa` | Password: (vacío)
+
+### Otras versiones del proyecto dockerizadas
+
+1. docker pull ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:release-1.0.0
+2. ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-1.0.1
 
 ---
 
@@ -76,14 +82,22 @@ Para optimizar la gestión de datos, se ha aplicado el patrón CQRS, separando l
 
 Se ha implementado un `Mediator` personalizado para lograr un desacoplamiento total entre la capa de presentación (Controllers) y los casos de uso (Application). Los controladores no invocan servicios directamente; en su lugar, envían un objeto de petición (`Request`) al mediador, el cual localiza y ejecuta el `RequestHandler` correspondiente. Esto reduce la complejidad de los controladores y permite añadir nuevos casos de uso sin modificar el código existente.
 
-### 4. Consistencia de Datos y Manejo de Errores
+### 4. Seguridad con JWT y JJWT
+
+La seguridad se gestiona mediante **Spring Security** y el uso de **JSON Web Tokens (JWT)** con la librería **JJWT**. Se ha implementado un flujo avanzado que utiliza:
+
+- **Access Tokens**: Tokens de corta duración para autorizar peticiones API.
+- **Refresh Tokens**: Tokens de larga duración para renovar el acceso sin requerir nuevas credenciales.
+- Se han configurado filtros de seguridad personalizados para validar la integridad de cada token en el pipeline de peticiones.
+
+### 5. Consistencia de Datos y Manejo de Errores
 
 Para garantizar la integridad de la información y una experiencia de usuario consistente, el proyecto utiliza:
 
 - **Hibernate Validation**: Uso de anotaciones Bean Validation (@NotNull, @Min, @Pattern) para validar los DTOs de entrada en la frontera de la API.
 - **ControllerAdvice**: Implementación de un manejador global de excepciones que captura errores de negocio y validación, transformándolos en respuestas JSON estandarizadas y amigables para el cliente.
 
-### 5. Ejecución Ágil: H2, Caché y Flyway
+### 6. Ejecución Ágil: H2, Caché y Flyway
 
 Siguiendo los requisitos del enunciado para facilitar una prueba rápida y sin dependencias externas pesadas:
 
@@ -91,16 +105,17 @@ Siguiendo los requisitos del enunciado para facilitar una prueba rápida y sin d
 - **Caché en Memoria**: Uso de la abstracción de caché de Spring para optimizar lecturas frecuentes y mejorar el tiempo de respuesta.
 - **Flyway**: Herramienta de migración que asegura que el esquema de la base de datos H2 se cree y evolucione de forma consistente y automática en cada arranque.
 
-### 6. Calidad de Código, Control de versiones,CI/CD Automatizado y Contenerización
+### 7. Calidad de Código, Control de versiones,CI/CD Automatizado y Contenerización
 
 La excelencia técnica se mantiene mediante herramientas integradas en el ciclo de vida de Maven y una pipeline de GitHub Actions:
 
 - **JaCoCo**: Generación de informes de cobertura, configurado para garantizar que el código crítico mantenga una cobertura superior al 85%.
+- **Spotless**: Plugin de formateo automático que asegura un estilo de código uniforme (Google Java Format) en todo el equipo.
 - **Git, Github y Gitflow**: Control de versiones y flujo de trabajo para el desarrollo de software.
 - **GitHub Actions**: Automatización total que ejecuta los tests, verifica el formato y construye una imagen Docker optimizada cada vez que se sube código a ramas principales o de release.
 - **Docker**: Uso de _Multi-stage builds_ y _Layered JARs_ para generar imágenes ligeras y seguras, listas para producción.
 
-### 7. Otras Decisiones Técnicas
+### 8. Otras Decisiones Técnicas
 
 - **Lombok**: Para reducir el código repetitivo (_boilerplate_) en entidades y DTOs.
 - **MapStruct**: Mapeadores automáticos de alto rendimiento para transferir datos entre capas sin exponer el modelo interno.
@@ -115,8 +130,6 @@ Con el objetivo de llevar esta API a un nivel productivo de alta disponibilidad 
 
 ### Técnicas / Arquitecturales
 
-- **Spring Security y JWT**: Implementación de seguridad para la autenticación y autorización segura mediante tokens.
-- **Spotless**: Integración de la herramienta para mantener un formato de código uniforme y seguir estándares de Clean Code.
 - **SonarQube & Checkmarx (Análisis de Código y Seguridad)**: Integración de herramientas SAST (Static Application Security Testing) en la pipeline de CI/CD para detectar proactivamente vulnerabilidades críticas, deuda técnica y asegurar el cumplimiento de estándares de calidad (Clean Code).
 - **Redis (Caché Distribuida)**: Sustitución de la caché en memoria por un cluster de Redis. Esto permitiría mantener la consistencia de la caché en arquitecturas de microservicios con múltiples instancias elásticas y mejorar los tiempos de respuesta en lecturas masivas.
 - **Persistencia en Producción (MySQL/PostgreSQL)**: Migración de H2 a una base de datos relacional robusta. Se implementaría mediante perfiles de Spring (`application-prod.yaml`) para asegurar la persistencia, integridad referencial avanzada y capacidades de backup/recovery.
@@ -126,7 +139,6 @@ Con el objetivo de llevar esta API a un nivel productivo de alta disponibilidad 
 
 ### Funcionales
 
-- **Añadir la entidad Usuario**: Punto de partida necesario para implementar un sistema de seguridad y control de acceso robusto.
 - **Sistema de Auditoría Completo**: Implementación de un log de auditoría detallado que registre qué usuario cambió qué campo y en qué momento, permitiendo una trazabilidad total del ciclo de vida de cada préstamo.
 - **Notificaciones Multi-canal**: Integración de servicios externos (para emails, SMS o webhooks) para notificar automáticamente a los clientes sobre cambios en el estado de sus solicitudes en tiempo real.
 - **Robustecimiento de Spring Security**: Implementación de políticas de seguridad corporativas, como el bloqueo automático de cuentas tras N intentos fallidos, auditoría de tokens JWT activos (Blacklisting) y soporte para autenticación Multi-Factor (MFA).
