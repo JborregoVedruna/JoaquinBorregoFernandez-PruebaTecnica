@@ -1,0 +1,55 @@
+@hostname = localhost
+@port = 8080
+@base_url = http://{{hostname}}:{{port}}
+@customer_path = /api/v1/customer
+@manager_path = /api/v1/manager
+@system_path = /api/v1/system
+
+### MethodArgumentTypeMismatchException
+GET {{base_url}}{{manager_path}}/a
+
+### IllegalArgumentException
+PATCH {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
+Content-Type: application/json
+
+{
+    "status": "CANCELLED"
+}
+
+### LoanApplicationNotFoundException
+GET {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d471
+
+### HttpMessageNotReadableException
+# Mensaje invalido por formato
+POST {{base_url}}{{customer_path}}/
+Content-Type: application/json
+
+{
+    "applicantName": "John Doe",
+    "requestedAmount": 1000f,
+    "currency": "EUR",
+    "applicantDni": "12345678Z"
+}
+
+### ConstraintViolationException
+#
+
+### MethodArgumentNotValidException
+# No cumple las validaciones del @Valid dto 
+POST {{base_url}}{{customer_path}}/
+Content-Type: application/json
+
+{
+    "applicantName": "John Doe",
+    "requestedAmount": 1000,
+    "currency": "EUR",
+    "applicantDni": "12345678A",
+    "status": "PENDING"
+}
+
+### HttpRequestMethodNotSupportedException
+DELETE {{base_url}}{{customer_path}}/
+
+### PropertyReferenceException
+GET {{base_url}}{{system_path}}/?page=0&size=10&sort=campoInexistente,asc
+Accept: application/json

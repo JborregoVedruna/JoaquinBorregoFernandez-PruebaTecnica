@@ -1,0 +1,91 @@
+@hostname = localhost
+@port = 8080
+@base_url = http://{{hostname}}:{{port}}/actuator
+
+# -----------------------------------------------
+# CORE ENDPOINTS
+# -----------------------------------------------
+### Obtener todos los endpoints
+GET {{base_url}}
+
+### Obtener estado de salud
+GET {{base_url}}/health
+
+### Obtener información de la aplicación
+GET {{base_url}}/info
+
+# -----------------------------------------------
+# CONFIGURACIÓN Y DIAGNÓSTICO
+# -----------------------------------------------
+### Obtener lista de beans
+GET {{base_url}}/beans
+
+### Obtener todas las propiedades de configuración
+GET {{base_url}}/configprops
+
+### Obtener propiedades de configuración por prefijo (Ejemplo: server)
+GET {{base_url}}/configprops/server
+
+### Obtener entorno (Environment)
+GET {{base_url}}/env
+
+### Obtener entorno por propiedad (Ejemplo: server.port)
+GET {{base_url}}/env/server.port
+
+### Obtener tareas programadas
+GET {{base_url}}/scheduledtasks
+
+### Obtener Mapeos
+GET {{base_url}}/mappings
+
+### Obtener informe de condiciones
+GET {{base_url}}/conditions
+
+# -----------------------------------------------
+# CACHÉ Y MÉTRICAS
+# -----------------------------------------------
+
+### Obtener información de todas las cachés
+GET {{base_url}}/caches
+
+### Obtener información de una caché específica (Ejemplo: myCacheName)
+# GET {{base_url}}/caches/myCacheName
+
+### Obtener lista de métricas disponibles
+GET {{base_url}}/metrics
+
+### Obtener métrica específica (Ejemplo: jvm.memory.used)
+GET {{base_url}}/metrics/jvm.memory.used
+
+# -----------------------------------------------
+# REGISTRO Y TRAZAS
+# -----------------------------------------------
+
+### Obtener volcado de hilos
+GET {{base_url}}/threaddump
+
+### Obtener loggers
+GET {{base_url}}/loggers
+
+### Obtener o modificar logger por nombre (Ejemplo: org.springframework.web)
+GET {{base_url}}/loggers/org.springframework.web
+
+### Obtener archivo de log
+GET {{base_url}}/logfile
+
+# -----------------------------------------------
+# SOFTWARE BILL OF MATERIALS (SBOM)
+# -----------------------------------------------
+
+### Obtener SBOM (Software Bill of Materials)
+GET {{base_url}}/sbom
+
+### Obtener SBOM por ID (Ejemplo: dependency-id)
+# GET {{base_url}}/sbom/dependency-id
+
+# -----------------------------------------------
+# RUTAS TEMPLATED CON PARÁMETROS VARIABLES
+# -----------------------------------------------
+
+### Obtener estado de salud con detalles de ruta (TEMPLATED)
+GET {{base_url}}/health/db
