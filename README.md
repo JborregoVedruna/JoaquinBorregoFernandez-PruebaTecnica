@@ -54,8 +54,8 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 
 ### Otras versiones del proyecto dockerizadas
 
-1. docker pull ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:release-1.0.0
-2. ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-1.0.1
+1. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:release-1.0.0**
+2. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-1.0.1**
 
 ---
 
