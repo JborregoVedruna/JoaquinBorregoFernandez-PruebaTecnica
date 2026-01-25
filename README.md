@@ -35,11 +35,11 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 
 1.  **Descargar la imagen** desde el registro de GitHub:
     ```bash
-    docker pull ghcr.io/jborregovedruna/pruebatech:master
+    docker pull ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:master
     ```
 2.  **Ejecutar el contenedor (última versión)**:
     ```bash
-    docker run -p 8080:8080 ghcr.io/jborregovedruna/pruebatech:master
+    docker run -p 8080:8080 ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:master
     ```
 
 ### Pasos para probar la API independientemente de su ejecución
