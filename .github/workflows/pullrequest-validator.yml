@@ -1,0 +1,46 @@
+name: Pull Request Validator
+
+# Esta pipeline se ejecuta cuando:
+on:
+  pull_request:
+    # Se abre un pull request a ramas principales y de tipo release
+    branches:
+      - main
+      - master
+      - develop
+      - 'release/**'
+  # Se ejecuta de forma manual
+  workflow_dispatch:
+
+# Job para construir y subir la imagen Docker
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clonamos el repositorio
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      # 2. Configuramos el entorno Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3. Verificación de tests
+      - name: Unit Tests
+        run: mvn test
+
+      # 4. Escaneamos las vulnerabilidades en el código fuente (FS)
+      - name: Run Trivy vulnerability scanner (Repo mode)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: 1
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'

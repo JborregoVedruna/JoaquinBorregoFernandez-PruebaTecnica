@@ -1,0 +1,31 @@
+@hostname = localhost
+@port = 8080
+@base_url = http://{{hostname}}:{{port}}
+@customer_path = /api/v1/customer
+@manager_path = /api/v1/manager
+@system_path = /api/v1/system
+
+### Realizar solicitud
+POST {{base_url}}{{customer_path}}/
+Content-Type: application/json
+
+{
+    "applicantName": "John Doe",
+    "requestedAmount": 1000,
+    "currency": "EUR",
+    "applicantDni": "12345678Z"
+}
+
+### Obtener todas las solicitudes
+GET {{base_url}}{{system_path}}/
+
+### Obtener solicitud por id
+GET {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
+
+### Actualizar estado de solicitud
+PATCH {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
+Content-Type: application/json
+
+{
+    "status": "REJECTED"
+}
