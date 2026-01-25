@@ -8,6 +8,7 @@ on:
       - main
       - master
       - 'release/**'
+      - 'hotfix/**'
   # Se ejecuta de forma manual
   workflow_dispatch:
 
@@ -37,9 +38,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 3. Verificación de tests
-      - name: Unit Tests
-        run: mvn test
+      # 3. Verificación de calidad y tests
+      - name: Verify Format and Run Tests
+        run: mvn spotless:check test
 
       # 4. Preparar Docker Buildx para usar su sistema de caché
       - name: Set up Docker Buildx

@@ -1,7 +1,11 @@
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
     # URL simplificada para evitar errores de metadatos/dialecto
-    url: jdbc:h2:mem:caixabank;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:caixabank;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -23,3 +27,9 @@ logging:
     # Nombre y ruta del archivo de log donde se escribirán los mensajes.
     # Este archivo se creará en el directorio de ejecución de la aplicación.
     name: logs/app.log
+
+auth:
+  access-token-secret-key: lMCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  access-token-expiration: 180000
+  refresh-token-secret-key: laCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  refresh-token-expiration: 604800000
