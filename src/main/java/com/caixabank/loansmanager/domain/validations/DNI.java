@@ -1,22 +1,24 @@
 package com.caixabank.loansmanager.domain.validations;
 
+import com.caixabank.loansmanager.domain.validations.validators.DNIValidator;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.caixabank.loansmanager.domain.validations.validators.DNIValidator;
-
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-
+/** Anotación personalizada para validar el formato de un DNI español. */
 @Constraint(validatedBy = DNIValidator.class)
-@Target({ ElementType.FIELD, ElementType.METHOD })
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DNI {
-    String message() default "Invalid DNI";
+  /** Mensaje de error por defecto. */
+  String message() default "Invalid ID format";
 
-    Class<?>[] groups() default {};
+  /** Grupos de validación. */
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  /** Carga útil (payload) de la validación. */
+  Class<? extends Payload>[] payload() default {};
 }

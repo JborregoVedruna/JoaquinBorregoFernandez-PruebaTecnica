@@ -1,7 +1,11 @@
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
     # URL simplificada para evitar errores de metadatos/dialecto
-    url: jdbc:h2:mem:caixabank;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:caixabank;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -17,3 +21,9 @@ spring:
     # Al no poner URL aquí, Flyway usa el mismo DataSource que la app principal
     baseline-on-migrate: true
     default-schema: caixabank
+
+auth:
+  access-token-secret-key: lMCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  access-token-expiration: 180000
+  refresh-token-secret-key: laCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  refresh-token-expiration: 604800000

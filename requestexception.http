@@ -4,13 +4,17 @@
 @customer_path = /api/v1/customer
 @manager_path = /api/v1/manager
 @system_path = /api/v1/system
+@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIyMjIyMjIyMkoiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTM1ODEwOCwiZXhwIjoxNzY5MzU4Mjg4fQ.KXHngdSRm45n-tuXxDHYzyQ1_2wMrqiQuqpGtVLv7xg
+@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzY5MzU3NDYyLCJleHAiOjE3Njk5NjIyNjJ9.PaW0K3yWVuJsoxx53hOrp5y49Re-zN0GrWKXH57jVsM
 
 ### MethodArgumentTypeMismatchException
 GET {{base_url}}{{manager_path}}/a
+Authorization: Bearer {{token}}
 
 ### IllegalArgumentException
 PATCH {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d479
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "status": "CANCELLED"
@@ -18,11 +22,13 @@ Content-Type: application/json
 
 ### LoanApplicationNotFoundException
 GET {{base_url}}{{manager_path}}/f47ac10b-58cc-4372-a567-0e02b2c3d471
+Authorization: Bearer {{token}}
 
 ### HttpMessageNotReadableException
 # Mensaje invalido por formato
 POST {{base_url}}{{customer_path}}/
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "applicantName": "John Doe",
@@ -31,13 +37,11 @@ Content-Type: application/json
     "applicantDni": "12345678Z"
 }
 
-### ConstraintViolationException
-#
-
 ### MethodArgumentNotValidException
 # No cumple las validaciones del @Valid dto 
 POST {{base_url}}{{customer_path}}/
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "applicantName": "John Doe",
@@ -49,7 +53,4 @@ Content-Type: application/json
 
 ### HttpRequestMethodNotSupportedException
 DELETE {{base_url}}{{customer_path}}/
-
-### PropertyReferenceException
-GET {{base_url}}{{system_path}}/?page=0&size=10&sort=campoInexistente,asc
-Accept: application/json
+Authorization: Bearer {{token}}
