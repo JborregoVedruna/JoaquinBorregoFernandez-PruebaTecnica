@@ -12,6 +12,13 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
+  /**
+   * Define el Bean de RedisCacheConfiguration.
+   *
+   * <p>RedisCacheConfiguration es el encargado de configurar la caché de Redis.
+   *
+   * @return La configuración de la caché de Redis.
+   */
   @Bean
   @Profile("compose")
   RedisCacheConfiguration cacheConfiguration() {

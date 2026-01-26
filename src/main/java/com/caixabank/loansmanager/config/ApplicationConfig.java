@@ -2,6 +2,8 @@ package com.caixabank.loansmanager.config;
 
 import com.caixabank.loansmanager.domain.exceptions.UserNotFoundException;
 import com.caixabank.loansmanager.infrastructure.adapters.outbound.repositories.UserRepository;
+import io.micrometer.observation.ObservationRegistry;
+import io.micrometer.observation.aop.ObservedAspect;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -99,5 +101,14 @@ public class ApplicationConfig {
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  /**
+   * @param observationRegistry
+   * @return
+   */
+  @Bean
+  ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
+    return new ObservedAspect(observationRegistry);
   }
 }
