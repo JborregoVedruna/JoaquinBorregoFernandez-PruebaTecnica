@@ -16,7 +16,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 public class RedisConfig {
 
   @Bean
-  public RedisCacheConfiguration cacheConfiguration() {
+  RedisCacheConfiguration cacheConfiguration() {
     // Creamos un ObjectMapper personalizado
     ObjectMapper objectMapper = new ObjectMapper();
     // Registramos el módulo para fechas Java 8 (LocalDateTime, etc)
