@@ -1,8 +1,8 @@
 # my global config
 global:
-  scrape_interval: 10s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 10s # Evaluate rules every 15 seconds. The default is every 1 minute.
-  # scrape_timeout is set to the global default (10s).
+  scrape_interval: 10s
+  evaluation_interval: 10s
+  # Habilitar remote write receiver para métricas de Tempo
 
 # Alertmanager configuration
 alerting:
@@ -26,18 +26,23 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ["prometheus:9090"]
        # The label name is added as a label `label_name=<label_value>` to any timeseries scraped from this config.
         labels:
           app: "prometheus"
 
-  # - job_name: 'microlocal'
-  #   metrics_path: '/actuator/prometheus'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: [ 'localhost:8080' ]
-  #       labels:
-  #         application: 'LocalApi'
   - job_name: 'tempo'
     static_configs:
       - targets: ['tempo:3200']
+
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']
+
+  - job_name: 'spring-app'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+        labels:
+          application: 'caixabank-api'

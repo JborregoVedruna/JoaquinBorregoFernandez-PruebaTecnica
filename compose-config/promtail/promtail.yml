@@ -20,8 +20,11 @@ scrape_configs:
           - localhost
         
         labels:
-          # Etiqueta esencial para identificar este flujo de logs
+          # Labels que el dashboard 15141 espera
           job: simple-app
+          namespace: caixabank
+          stream: stdout
+          container: spring-app
           
           # La ruta de los logs a leer.
           # Si estás en un contenedor, usa la ruta del contenedor.

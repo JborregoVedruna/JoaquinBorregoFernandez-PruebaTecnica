@@ -93,11 +93,6 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
 10. **LGTM Stack (disponible en perfil compose)**:
     - Acceso en: [http://localhost:3001](http://localhost:3001)
     - Para acceder a LGTM Stack, usa las credenciales admin:admin.
-    - Una vez dentro, crea las conexiones con Prometheus (http://prometheus:9090), Loki (http://loki:3100) y Tempo (http://tempo:3200).
-    - Importa dashboards:
-      - 19268
-      - 14706
-      - 13639
 
 ### Otras versiones del proyecto dockerizadas
 
