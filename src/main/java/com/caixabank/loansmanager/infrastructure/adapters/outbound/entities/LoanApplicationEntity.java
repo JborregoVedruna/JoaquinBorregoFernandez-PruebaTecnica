@@ -52,6 +52,6 @@ public class LoanApplicationEntity {
 
   /** Relación con el usuario que realizó la solicitud. */
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "users_user_uuid", referencedColumnName = "user_uuid")
+  @JoinColumn(name = "users_user_uuid", referencedColumnName = "user_uuid", nullable = false)
   private UserEntity user;
 }

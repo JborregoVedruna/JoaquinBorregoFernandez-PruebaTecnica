@@ -7,7 +7,8 @@ Este proyecto es una API REST para la gestión de solicitudes de préstamos, con
 - 🏗️ **Arquitectura Hexagonal**: Desacoplamiento total entre dominio e infraestructura.
 - 🔐 **Seguridad Avanzada**: Autenticación JWT con rotación de tokens (Access & Refresh).
 - ⚡ **Alto Rendimiento**: Caché de segundo nivel orientada a optimizar lecturas frecuentes.
-- 🧪 **Calidad Garantizada**: Cobertura de tests unitarios superior al 85%.
+- 🧪 **Calidad Garantizada**: Cobertura de tests unitarios superior al 85%, análisis de calidad con SonarQube y análisis de vulnerabilidades con Checkmarx.
+- 📊 **Monitoreo y Observabilidad**: Grafana para dashboards de métricas y logs, Tempo para trazabilidad distribuida y Loki para centralización de logs.
 - 🗄️ **Control de Versiones de BD**: Gestión evolutiva y automatizada del esquema de datos.
 - 🤖 **CI/CD Automatizado**: Pipelines de GitHub Actions para validación de código, tests y publicación técnica.
 - 🐳 **Dockerización Eficiente**: Uso de _Multi-stage builds_ y _Layered JARs_ para optimizar el peso y la velocidad de despliegue.
@@ -42,15 +43,61 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
     docker run -p 8080:8080 ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:master
     ```
 
+### 🐳 Ejecución con Infraestructura Completa (Docker Compose)
+
+Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM Stack), puedes usar el perfil `compose`. Spring Boot gestionará automáticamente el ciclo de vida de los contenedores.
+
+1.  **Clonar el repositorio** y situarse en la raíz del proyecto.
+2.  **Instalar dependencias**:
+    ```bash
+    ./mvnw install
+    ```
+3.  **Compilar y ejecutar**:
+    ```bash
+    mvn spring-boot:run "-Dspring-boot.run.profiles=compose"
+    ```
+
+#### 🛠️ Servicios Incluidos en el Perfil Compose:
+
+- **Base de Datos**: MySQL 8.0 (Puerto 3307).
+- **Caché**: Redis (Puerto 6379).
+- **Observabilidad (LGTM Stack)**:
+  - **Grafana**: [http://localhost:3001](http://localhost:3001) (Dashboards de métricas y logs).
+  - **Prometheus**: [http://localhost:9090](http://localhost:9090) (Recolección de métricas).
+  - **Loki**: Centralización de logs.
+  - **Tempo**: Trazabilidad distribuida.
+- **Análisis y Seguridad**: **SonarQube** para evaluación de calidad de código y **Checkmarx (KICS)** para detección de vulnerabilidades en infraestructura.
+
 ### Pasos para probar la API independientemente de su ejecución
 
 3.  **Probar la API**:
-    - Tienes ejemplos de peticiones listos para usar en [requests.http](file:///c:/Users/admin/Desktop/context/pruebatech/requests.http).
+    - Tienes ejemplos de peticiones listos para usar en [requests.http](./requests.http).
 4.  **Documentación API (Swagger/OpenAPI)**:
     - Una vez en ejecución, tienes la documentación Swagger en el siguiente enlace: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-5.  **Consola de Base de Datos (H2)**:
+5.  **Consola de Base de Datos H2 (no disponible en perfil compose)**:
     - Acceso en: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
     - JDBC URL: `jdbc:h2:mem:caixabank` | Usuario: `sa` | Password: (vacío)
+6.  **Base de Datos MySQL (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:3307](http://localhost:3307) (Necesario un cliente)
+    - Puedes acceder mediante CloudBeaver en [http://localhost:8978/](http://localhost:8978/), teniendo en cuenta que entonces sería mysql:3306
+    - Usuario: `root` | Password: `root`
+7.  **Redis (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:6379](http://localhost:6379) (Necesario un cliente)
+    - Puedes acceder mediante RedisInsight en [http://localhost:5540/](http://localhost:5540/)
+8.  **SonarQube (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:9000](http://localhost:9000)
+    - Para acceder a SonarQube, crea un nuevo proyecto local y debes configurar el sonar.token en el properties del archivo `pom.xml`
+    - Ejecutar el comando mvn sonar:sonar para ver los resultados del análisis en SonarQube.
+9.  **Checkmarx (disponible en perfil compose)**:
+    - Al ejecutar la aplicación con el perfil compose, se ejecuta Checkmarx automáticamente y se genera el reporte en la carpeta `checkmarx-results`
+10. **LGTM Stack (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:3001](http://localhost:3001)
+    - Para acceder a LGTM Stack, usa las credenciales admin:admin.
+    - Una vez dentro, crea las conexiones con Prometheus (http://prometheus:9090), Loki (http://loki:3100) y Tempo (http://tempo:3200).
+    - Importa dashboards:
+      - 19268
+      - 15983
+      - 13186
 
 ### Otras versiones del proyecto dockerizadas
 
@@ -58,6 +105,7 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 2. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-1.0.1**
 3. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:release-2.0.0**
 4. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-2.0.1**
+5. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-2.0.2**
 
 ---
 
@@ -117,7 +165,21 @@ La excelencia técnica se mantiene mediante herramientas integradas en el ciclo 
 - **GitHub Actions**: Automatización total que ejecuta los tests, verifica el formato y construye una imagen Docker optimizada cada vez que se sube código a ramas principales o de release.
 - **Docker**: Uso de _Multi-stage builds_ y _Layered JARs_ para generar imágenes ligeras y seguras, listas para producción.
 
-### 8. Otras Decisiones Técnicas
+### 8. Infraestructura Avanzada y Observabilidad (Perfil `compose`)
+
+Utilizando la librería **Spring Boot Docker Compose Support**, el proyecto es capaz de provisionar y configurar automáticamente un entorno completo con un solo comando. Al activar el perfil `compose`, se integran y sincronizan los siguientes sistemas:
+
+- **Persistencia Robusta (MySQL 8.0)**: Sustitución de H2 por una base de datos relacional persistente, gestionada mediante migraciones automatizadas con **Flyway**.
+- **Caché de Alto Rendimiento (Redis)**: Implementación de una caché distribuida para optimizar la latencia en la recuperación de datos y reducir la carga sobre la base de datos.
+- **Ecosistema de Observabilidad (LGTM Stack)**: Monitorización integral 360º conectada con **Spring Actuator**:
+  - **Grafana & Prometheus**: Dashboards profesionales para la visualización de métricas de salud y rendimiento.
+  - **Loki & Promtail**: Arquitectura de logs centralizada para una depuración eficiente en tiempo real.
+  - **Tempo**: Trazabilidad distribuida de extremo a extremo utilizando el protocolo **OTLP**.
+- **Garantía de Calidad y Seguridad (SAST)**:
+  - **SonarQube**: Análisis estático de código para asegurar estándares de _Clean Code_ y detección de deuda técnica.
+  - **Checkmarx (KICS)**: Escaneo proactivo de seguridad en los archivos de infraestructura y configuración.
+
+### 9. Otras Decisiones Técnicas
 
 - **Lombok**: Para reducir el código repetitivo (_boilerplate_) en entidades y DTOs.
 - **MapStruct**: Mapeadores automáticos de alto rendimiento para transferir datos entre capas sin exponer el modelo interno.
@@ -132,10 +194,6 @@ Con el objetivo de llevar esta API a un nivel productivo de alta disponibilidad 
 
 ### Técnicas / Arquitecturales
 
-- **SonarQube & Checkmarx (Análisis de Código y Seguridad)**: Integración de herramientas SAST (Static Application Security Testing) en la pipeline de CI/CD para detectar proactivamente vulnerabilidades críticas, deuda técnica y asegurar el cumplimiento de estándares de calidad (Clean Code).
-- **Redis (Caché Distribuida)**: Sustitución de la caché en memoria por un cluster de Redis. Esto permitiría mantener la consistencia de la caché en arquitecturas de microservicios con múltiples instancias elásticas y mejorar los tiempos de respuesta en lecturas masivas.
-- **Persistencia en Producción (MySQL/PostgreSQL)**: Migración de H2 a una base de datos relacional robusta. Se implementaría mediante perfiles de Spring (`application-prod.yaml`) para asegurar la persistencia, integridad referencial avanzada y capacidades de backup/recovery.
-- **Stack de Observabilidad (LGTM Stack)**: Explotación completa de los datos de **Spring Actuator** integrándolos con Grafana (visualización), Prometheus (métricas), Loki (logs centralizados) y Tempo (trazabilidad distribuida) para una monitorización 360º en tiempo real.
 - **Arquitectura de Eventos con Kafka (Auditoría Desacoplada)**: Implementación de un bus de eventos para capturar de forma inmutable cada cambio de estado en las solicitudes. Esto permitiría alimentar un microservicio de auditoría externo o un _Data Lake_ sin impactar en la latencia de las transacciones principales, garantizando la trazabilidad histórica total.
 - **Infraestructura como Código (Terraform & Azure)**: Definición de toda la infraestructura necesaria en la nube de Azure mediante Terraform (Providers, Resource Groups, Container Apps, SQL Databases) para permitir despliegues repetibles, seguros y versionados.
 

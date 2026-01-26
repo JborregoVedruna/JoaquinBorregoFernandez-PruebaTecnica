@@ -1,5 +1,6 @@
 package com.caixabank.loansmanager.domain.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +12,9 @@ import lombok.Data;
  * <p>{@code @Data}: Anotación de Lombok para generar métodos de acceso y utilidad.
  */
 @Data
-public class UserModel {
+public class UserModel implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   /** Identificador único universal (UUID) del usuario. */
   private UUID userUuid;
 

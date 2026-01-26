@@ -39,7 +39,7 @@ public class UserEntity implements UserDetails {
   private String username;
 
   /** Contraseña codificada. */
-  @Column(name = "password", nullable = false)
+  @Column(name = "password", nullable = false, columnDefinition = "CHAR(60)")
   private String password;
 
   /** Documento Nacional de Identidad único. */

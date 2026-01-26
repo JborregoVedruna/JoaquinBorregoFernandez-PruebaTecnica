@@ -1,5 +1,6 @@
 package com.caixabank.loansmanager.domain.model;
 
+import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageModel<T> {
+public class PageModel<T> implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   /** El listado de elementos contenidos en la página actual. */
   private List<T> content;
 

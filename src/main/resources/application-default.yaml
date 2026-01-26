@@ -1,4 +1,9 @@
 spring:
+  cache:
+    type: simple
+  docker:
+    compose:
+      enabled: false
   h2:
     console:
       enabled: true
@@ -28,8 +33,8 @@ logging:
     # Este archivo se creará en el directorio de ejecución de la aplicación.
     name: logs/app.log
 
-auth:
-  access-token-secret-key: lMCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
-  access-token-expiration: 180000
-  refresh-token-secret-key: laCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
-  refresh-token-expiration: 604800000
+  pattern:
+    # Define el patrón de formato para los logs que se muestran en la consola.
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    # Define el patrón de formato para los logs que se escriben en el archivo (logs/app.log).
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

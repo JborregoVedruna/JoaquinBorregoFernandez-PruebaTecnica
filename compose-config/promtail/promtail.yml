@@ -1,0 +1,45 @@
+server:
+  # Opcional: Puerto de escucha del propio Promtail (para métricas internas)
+  http_listen_port: 9080 
+  grpc_listen_port: 9096
+  
+positions:
+  # MUY IMPORTANTE: Evita que Promtail re-envíe logs al reiniciar.
+  filename: /tmp/positions.yaml 
+
+clients:
+  # OBLIGATORIO: Dirección donde está tu servidor Loki.
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # OBLIGATORIO: Al menos un trabajo que le diga a Promtail QUÉ leer.
+  - job_name: application_logs
+    
+    static_configs:
+      - targets:
+          - localhost
+        
+        labels:
+          # Etiqueta esencial para identificar este flujo de logs
+          job: simple-app
+          
+          # La ruta de los logs a leer.
+          # Si estás en un contenedor, usa la ruta del contenedor.
+          # Ejemplo para logs del sistema:
+          # __path__: /var/log/syslog
+          # 
+          # Ejemplo para logs de una carpeta específica:
+          __path__: C:/Users/admin/Desktop/monitorizacion/logs/*.log
+    # pipeline_stages:
+    #   # Paso 1: Usamos REGEX para capturar los campos de tu formato de log
+    #   - regex:
+    #       # Expresión que coincide con el patrón: 2025-10-22 10:57:13.456 [main] INFO com.example.MyService - Application started
+    #       # Captura (time), (thread), (level), (logger), y (msg)
+    #       expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s+(?P<log_level>\w+)\s+(?P<logger>[^\s]+)\s+-\s+(?P<msg>.*)$'
+          
+      # Paso 2: Usamos las capturas del REGEX para crear nuevas etiquetas (labels)
+      # Esto permite filtrar rápidamente por nivel, hilo o logger en Loki.
+      # - labels:
+      #     level:
+      #     thread:
+      #     logger:

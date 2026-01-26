@@ -3,7 +3,7 @@ spring:
     name: loansmanager
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
 
 logging:
   level:
@@ -22,12 +22,6 @@ logging:
         SQL: DEBUG
       springframework:
         cache: DEBUG
-
-  pattern:
-    # Define el patrón de formato para los logs que se muestran en la consola.
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
-    # Define el patrón de formato para los logs que se escriben en el archivo (logs/app.log).
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
 springdoc:
   # Asegura que el JSON de la especificación esté bien ordenado.
@@ -54,3 +48,9 @@ management:
         http:
           server:
             requests: true
+
+auth:
+  access-token-secret-key: lMCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  access-token-expiration: 180000
+  refresh-token-secret-key: laCvj7Sirkk41OpuXDBKoSA1YeQ4aTeHmP4gzoyoaLk=
+  refresh-token-expiration: 604800000

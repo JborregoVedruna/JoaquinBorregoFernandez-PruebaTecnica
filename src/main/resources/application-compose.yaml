@@ -1,0 +1,33 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yaml
+      # apaga los contenedores al detener la app
+      lifecycle-management: start_and_stop
+      # los contenedores estarán listos antes que el contexto de Spring
+      startup:
+        wait: always
+      readiness:
+        timeout: 5m
+      # profiles:
+      #   active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3307/caixabank
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        type:
+          preferred_uuid_jdbc_type: CHAR
+  flyway:
+    enabled: true
+    schemas: caixabank
+    locations:
+      - classpath:db/flyway/mysql
+    # Al no poner URL aquí, Flyway usa el mismo DataSource que la app principal
+    baseline-on-migrate: true
+    default-schema: caixabank
