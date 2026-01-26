@@ -29,7 +29,7 @@ scrape_configs:
           # __path__: /var/log/syslog
           # 
           # Ejemplo para logs de una carpeta específica:
-          __path__: C:/Users/admin/Desktop/monitorizacion/logs/*.log
+          __path__: /logs/*.log
     # pipeline_stages:
     #   # Paso 1: Usamos REGEX para capturar los campos de tu formato de log
     #   - regex:

@@ -59,6 +59,10 @@ services:
       - "3001:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - loki
+      - tempo
+      - prometheus
 
   # Loki para logs
   loki:
@@ -78,6 +82,8 @@ services:
       - ./logs:/logs
       - ./compose-config/promtail/promtail.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
 
   # Tempo para tracing
   tempo:
