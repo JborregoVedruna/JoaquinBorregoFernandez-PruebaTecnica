@@ -93,6 +93,11 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
 10. **LGTM Stack (disponible en perfil compose)**:
     - Acceso en: [http://localhost:3001](http://localhost:3001)
     - Para acceder a LGTM Stack, usa las credenciales admin:admin.
+    - Ids de los dashboards para importar:
+      - 12900
+      - 11378
+      - 15141
+      - 13639
 
 ### Otras versiones del proyecto dockerizadas
 

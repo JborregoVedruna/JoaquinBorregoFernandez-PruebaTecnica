@@ -41,6 +41,11 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [${spring.application.name:-},%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5p [${spring.application.name:-},%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.caixabank: DEBUG
+    io.opentelemetry: INFO
+    org.springframework.web: INFO
 
 management:
   observations:
@@ -51,8 +56,6 @@ management:
       probability: 1.0
   otlp:
     tracing:
-      endpoint: http://localhost:4317
-  endpoints:
-    web:
-      exposure:
-        include: "*" # Necesario para que Actuator exponga los datos
+      export:
+        otlp:
+          endpoint: http://localhost:4317
