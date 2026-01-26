@@ -1,4 +1,9 @@
 spring:
+  cache:
+    type: simple
+  docker:
+    compose:
+      enabled: false
   h2:
     console:
       enabled: true

@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: simple
   h2:
     console:
       enabled: true

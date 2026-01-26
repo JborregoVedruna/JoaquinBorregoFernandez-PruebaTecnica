@@ -1,0 +1,3 @@
+gitignore cloudbeaver, sonar y grafana (lo no necesario)
+configurar bien sonar
+configurar grafana

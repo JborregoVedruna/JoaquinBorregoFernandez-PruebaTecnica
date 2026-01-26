@@ -5,7 +5,7 @@
 @manager_path = /api/v1/manager
 @system_path = /api/v1/system
 @auth_path = /api/v1/auth
-@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIxMTExMTExMUgiLCJzdWIiOiJtYW5hZ2VyIiwiaWF0IjoxNzY5NDMwNzk4LCJleHAiOjE3Njk0MzA5Nzh9.JFmKYWV2vE9MKeDP3KXTSCwE3OPO90IsCqzi2WtCD8Y
+@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIyMjIyMjIyMkoiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2OTQzOTM3MywiZXhwIjoxNzY5NDM5NTUzfQ.qLXyZIFdrTuVXoH-l9mdzAjJzoBKV0hhzK_08278Yvk
 @refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzY5MzU3NDYyLCJleHAiOjE3Njk5NjIyNjJ9.PaW0K3yWVuJsoxx53hOrp5y49Re-zN0GrWKXH57jVsM
 
 ### Registrar usuario
