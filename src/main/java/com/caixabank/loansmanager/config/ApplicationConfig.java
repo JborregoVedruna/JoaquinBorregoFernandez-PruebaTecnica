@@ -2,12 +2,13 @@ package com.caixabank.loansmanager.config;
 
 import com.caixabank.loansmanager.domain.exceptions.UserNotFoundException;
 import com.caixabank.loansmanager.infrastructure.adapters.outbound.repositories.UserRepository;
+import io.micrometer.observation.ObservationRegistry;
+import io.micrometer.observation.aop.ObservedAspect;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
             contact = @Contact(name = "Joaquin Borrego Fernandez", email = "juakylc14@gmail.com"),
             license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/2.0")))
 @Configuration
-@EnableCaching
 @AllArgsConstructor
 public class ApplicationConfig {
 
@@ -101,5 +101,14 @@ public class ApplicationConfig {
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  /**
+   * @param observationRegistry
+   * @return
+   */
+  @Bean
+  ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
+    return new ObservedAspect(observationRegistry);
   }
 }
