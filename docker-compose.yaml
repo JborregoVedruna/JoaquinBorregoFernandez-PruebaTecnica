@@ -75,7 +75,7 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - /var/log:/var/log
+      - ./logs:/logs
       - ./compose-config/promtail/promtail.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
 
@@ -88,7 +88,8 @@ services:
     command: [ "-config.file=/etc/tempo.yaml" ]
     ports:
       - "3200:3200" 
-      - "4317:4317" # Puerto OTLP para que Spring envíe trazas
+      - "4317:4317"
+      - "4318:4318"
 
   # SonarQube para análisis estático
   sonarqube:
