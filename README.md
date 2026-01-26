@@ -7,7 +7,8 @@ Este proyecto es una API REST para la gestión de solicitudes de préstamos, con
 - 🏗️ **Arquitectura Hexagonal**: Desacoplamiento total entre dominio e infraestructura.
 - 🔐 **Seguridad Avanzada**: Autenticación JWT con rotación de tokens (Access & Refresh).
 - ⚡ **Alto Rendimiento**: Caché de segundo nivel orientada a optimizar lecturas frecuentes.
-- 🧪 **Calidad Garantizada**: Cobertura de tests unitarios superior al 85%.
+- 🧪 **Calidad Garantizada**: Cobertura de tests unitarios superior al 85%, análisis de calidad con SonarQube y análisis de vulnerabilidades con Checkmarx.
+- 📊 **Monitoreo y Observabilidad**: Grafana para dashboards de métricas y logs, Tempo para trazabilidad distribuida y Loki para centralización de logs.
 - 🗄️ **Control de Versiones de BD**: Gestión evolutiva y automatizada del esquema de datos.
 - 🤖 **CI/CD Automatizado**: Pipelines de GitHub Actions para validación de código, tests y publicación técnica.
 - 🐳 **Dockerización Eficiente**: Uso de _Multi-stage builds_ y _Layered JARs_ para optimizar el peso y la velocidad de despliegue.
@@ -74,7 +75,16 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
     - JDBC URL: `jdbc:h2:mem:caixabank` | Usuario: `sa` | Password: (vacío)
 6.  **Base de Datos MySQL (disponible en perfil compose)**:
     - Acceso en: [http://localhost:3307](http://localhost:3307) (Necesario un cliente)
+    - Puedes acceder mediante CloudBeaver en [http://localhost:8978/](http://localhost:8978/), teniendo en cuenta que entonces sería mysql:3306
     - Usuario: `root` | Password: `root`
+7.  **Redis (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:6379](http://localhost:6379) (Necesario un cliente)
+    - Puedes acceder mediante RedisInsight en [http://localhost:5540/](http://localhost:5540/)
+8.  **SonarQube (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:9000](http://localhost:9000)
+    - Usuario: `admin` | Password: `Admin1234!!!`
+9.  **Checkmarx (disponible en perfil compose)**:
+    - Al ejecutar la aplicación con el perfil compose, se ejecuta Checkmarx automáticamente y se genera el reporte en la carpeta `checkmarx-results`
 
 ### Otras versiones del proyecto dockerizadas
 

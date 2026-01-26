@@ -16,6 +16,17 @@ services:
       timeout: 5s
       retries: 5
 
+  #Cliente de MySQL
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./compose-config/cloudbeaver:/opt/cloudbeaver/workspace
+    depends_on:
+      - mysql
+
   # Redis para cache
   redis:
     image: redis:alpine
@@ -85,6 +96,10 @@ services:
   sonarqube:
     image: sonarqube:community
     container_name: sonarqube
+    volumes:
+      - ./sonar-config/data:/opt/sonarqube/data
+      - ./sonar-config/extensions:/opt/sonarqube/extensions
+      - ./sonar-config/conf:/opt/sonarqube/conf
     ports:
       - "9000:9000"
     environment:
@@ -96,7 +111,8 @@ services:
     container_name: kics
     volumes:
       - .:/path
-    command: scan -p /path -o /path/kics-results.json
+    command: scan -p /path -o /path/checkmarx-results/ --report-formats json,html --output-name results
+    #command: scan -p /path -o /path/kics-results.json
 
 networks:
   default:

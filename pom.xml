@@ -28,7 +28,11 @@
 		<url />
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<sonar.projectKey>caixabank</sonar.projectKey>
+		<sonar.projectName>caixabank</sonar.projectName>
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
+		<sonar.token>sqp_4c39540a4101449d967f4f642f8d50db44fba51c</sonar.token>
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
 		<dependency>

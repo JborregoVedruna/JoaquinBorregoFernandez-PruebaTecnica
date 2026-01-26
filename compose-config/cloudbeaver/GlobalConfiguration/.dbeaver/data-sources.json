@@ -1,0 +1,42 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-19bfa2f2625-68ffe75d11bc858e": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "MySQL@mysql",
+			"configuration": {
+				"host": "mysql",
+				"port": "3306",
+				"database": "caixabank",
+				"url": "jdbc:mysql://mysql:3306/caixabank",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"provider-properties": {
+					"@dbeaver-show-all-dbs@": "false"
+				},
+				"auth-model": "native",
+				"bootstrap": {
+					"autocommit": true
+				}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}
