@@ -66,12 +66,15 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
 ### Pasos para probar la API independientemente de su ejecución
 
 3.  **Probar la API**:
-    - Tienes ejemplos de peticiones listos para usar en [requests.http](file:///c:/Users/admin/Desktop/context/pruebatech/requests.http).
+    - Tienes ejemplos de peticiones listos para usar en [requests.http](./requests.http).
 4.  **Documentación API (Swagger/OpenAPI)**:
     - Una vez en ejecución, tienes la documentación Swagger en el siguiente enlace: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-5.  **Consola de Base de Datos (H2)**:
+5.  **Consola de Base de Datos H2 (no disponible en perfil compose)**:
     - Acceso en: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
     - JDBC URL: `jdbc:h2:mem:caixabank` | Usuario: `sa` | Password: (vacío)
+6.  **Base de Datos MySQL (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:3307](http://localhost:3307) (Necesario un cliente)
+    - Usuario: `root` | Password: `root`
 
 ### Otras versiones del proyecto dockerizadas
 
