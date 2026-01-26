@@ -38,4 +38,4 @@ checkmarx-results/
 sonar-config/data/
 sonar-config/logs/
 sonar-config/temp/
-sonar-config/extensions/downloads/
+sonar-config/extensions/

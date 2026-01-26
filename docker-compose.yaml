@@ -22,8 +22,6 @@ services:
     container_name: cloudbeaver
     ports:
       - "8978:8978"
-    volumes:
-      - ./compose-config/cloudbeaver:/opt/cloudbeaver/workspace
     depends_on:
       - mysql
 

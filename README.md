@@ -92,6 +92,7 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
 2. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-1.0.1**
 3. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:release-2.0.0**
 4. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-2.0.1**
+5. **ghcr.io/jborregovedruna/joaquinborregofernandez-pruebatecnica:hotfix-2.0.2**
 
 ---
 
