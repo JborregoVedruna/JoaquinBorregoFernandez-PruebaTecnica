@@ -48,7 +48,11 @@ Si prefieres no instalar Java/Maven localmente, puedes usar Docker:
 Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM Stack), puedes usar el perfil `compose`. Spring Boot gestionará automáticamente el ciclo de vida de los contenedores.
 
 1.  **Clonar el repositorio** y situarse en la raíz del proyecto.
-2.  **Compilar y ejecutar**:
+2.  **Instalar dependencias**:
+    ```bash
+    ./mvnw install
+    ```
+3.  **Compilar y ejecutar**:
     ```bash
     mvn spring-boot:run "-Dspring-boot.run.profiles=compose"
     ```
@@ -82,9 +86,18 @@ Si deseas ejecutar la API con todos sus servicios de soporte (MySQL, Redis, LGTM
     - Puedes acceder mediante RedisInsight en [http://localhost:5540/](http://localhost:5540/)
 8.  **SonarQube (disponible en perfil compose)**:
     - Acceso en: [http://localhost:9000](http://localhost:9000)
-    - Usuario: `admin` | Password: `Admin1234!!!`
+    - Para acceder a SonarQube, crea un nuevo proyecto local y debes configurar el sonar.token en el properties del archivo `pom.xml`
+    - Ejecutar el comando mvn sonar:sonar para ver los resultados del análisis en SonarQube.
 9.  **Checkmarx (disponible en perfil compose)**:
     - Al ejecutar la aplicación con el perfil compose, se ejecuta Checkmarx automáticamente y se genera el reporte en la carpeta `checkmarx-results`
+10. **LGTM Stack (disponible en perfil compose)**:
+    - Acceso en: [http://localhost:3001](http://localhost:3001)
+    - Para acceder a LGTM Stack, usa las credenciales admin:admin.
+    - Una vez dentro, crea las conexiones con Prometheus (http://prometheus:9090), Loki (http://loki:3100) y Tempo (http://tempo:3200).
+    - Importa dashboards:
+      - 19268
+      - 15983
+      - 13186
 
 ### Otras versiones del proyecto dockerizadas
 

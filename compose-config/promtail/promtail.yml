@@ -8,8 +8,8 @@ positions:
   filename: /tmp/positions.yaml 
 
 clients:
-  # OBLIGATORIO: Dirección donde está tu servidor Loki. ¡AJUSTA ESTA URL!
-  - url: http://127.0.0.1:3100/loki/api/v1/push
+  # OBLIGATORIO: Dirección donde está tu servidor Loki.
+  - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
   # OBLIGATORIO: Al menos un trabajo que le diga a Promtail QUÉ leer.

@@ -32,3 +32,9 @@ logging:
     # Nombre y ruta del archivo de log donde se escribirán los mensajes.
     # Este archivo se creará en el directorio de ejecución de la aplicación.
     name: logs/app.log
+
+  pattern:
+    # Define el patrón de formato para los logs que se muestran en la consola.
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    # Define el patrón de formato para los logs que se escriben en el archivo (logs/app.log).
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

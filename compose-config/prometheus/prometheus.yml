@@ -31,10 +31,13 @@ scrape_configs:
         labels:
           app: "prometheus"
 
-  - job_name: 'microlocal'
-    metrics_path: '/actuator/prometheus'
-    scrape_interval: 5s
+  # - job_name: 'microlocal'
+  #   metrics_path: '/actuator/prometheus'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: [ 'localhost:8080' ]
+  #       labels:
+  #         application: 'LocalApi'
+  - job_name: 'tempo'
     static_configs:
-      - targets: [ 'localhost:8080' ]
-        labels:
-          application: 'LocalApi'
+      - targets: ['tempo:3200']

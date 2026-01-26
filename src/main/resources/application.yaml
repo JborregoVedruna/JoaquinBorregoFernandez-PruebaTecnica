@@ -23,12 +23,6 @@ logging:
       springframework:
         cache: DEBUG
 
-  pattern:
-    # Define el patrón de formato para los logs que se muestran en la consola.
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
-    # Define el patrón de formato para los logs que se escriben en el archivo (logs/app.log).
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-
 springdoc:
   # Asegura que el JSON de la especificación esté bien ordenado.
   writer-with-order-by-keys: true
