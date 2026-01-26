@@ -20,8 +20,11 @@ scrape_configs:
           - localhost
         
         labels:
-          # Etiqueta esencial para identificar este flujo de logs
+          # Labels que el dashboard 15141 espera
           job: simple-app
+          namespace: caixabank
+          stream: stdout
+          container: spring-app
           
           # La ruta de los logs a leer.
           # Si estás en un contenedor, usa la ruta del contenedor.
@@ -29,7 +32,7 @@ scrape_configs:
           # __path__: /var/log/syslog
           # 
           # Ejemplo para logs de una carpeta específica:
-          __path__: C:/Users/admin/Desktop/monitorizacion/logs/*.log
+          __path__: /logs/*.log
     # pipeline_stages:
     #   # Paso 1: Usamos REGEX para capturar los campos de tu formato de log
     #   - regex:

@@ -31,3 +31,31 @@ spring:
     # Al no poner URL aquí, Flyway usa el mismo DataSource que la app principal
     baseline-on-migrate: true
     default-schema: caixabank
+
+logging:
+  file:
+    # Nombre y ruta del archivo de log donde se escribirán los mensajes.
+    # Este archivo se creará en el directorio de ejecución de la aplicación.
+    name: logs/app.log
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [${spring.application.name:-},%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5p [${spring.application.name:-},%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.caixabank: DEBUG
+    io.opentelemetry: INFO
+    org.springframework.web: INFO
+
+management:
+  observations:
+    key-values:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4317
