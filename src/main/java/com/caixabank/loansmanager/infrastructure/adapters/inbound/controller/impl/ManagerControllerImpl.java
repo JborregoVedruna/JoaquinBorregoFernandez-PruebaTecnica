@@ -81,8 +81,9 @@ public class ManagerControllerImpl implements ManagerController {
       String status, Pageable pageable) {
     GetLoanApplicationsByStatusResponse response =
         mediator.dispatch(
-            new GetLoanApplicationsByStatusRequest(Enum.valueOf(LoanStatus.class, status), 
-                                                    inboundConverter.toPageableModel(pageable)));
+            new GetLoanApplicationsByStatusRequest(
+                Enum.valueOf(LoanStatus.class, status),
+                inboundConverter.toPageableModel(pageable)));
     return ResponseEntity.ok()
         .body(
             inboundConverter.toLoanApplicationOutputPage(

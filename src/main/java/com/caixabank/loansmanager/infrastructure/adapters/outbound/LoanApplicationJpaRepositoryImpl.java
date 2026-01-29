@@ -106,9 +106,11 @@ public class LoanApplicationJpaRepositoryImpl implements LoanApplicationJpaRepos
    * <p>Busca las solicitudes de préstamo por estado, lanzando excepción si no se encuentran.
    */
   @Override
-  public PageModel<LoanApplicationModel> findByStatus(LoanStatus status, PageableModel pageableModel) {
+  public PageModel<LoanApplicationModel> findByStatus(
+      LoanStatus status, PageableModel pageableModel) {
     log.info("Retrieving all loan applications with status {}", status);
     return outboundConverter.toLoanApplicationModelPage(
-        loanApplicationRepository.findByStatus(status, outboundConverter.toPageable(pageableModel)));
+        loanApplicationRepository.findByStatus(
+            status, outboundConverter.toPageable(pageableModel)));
   }
 }

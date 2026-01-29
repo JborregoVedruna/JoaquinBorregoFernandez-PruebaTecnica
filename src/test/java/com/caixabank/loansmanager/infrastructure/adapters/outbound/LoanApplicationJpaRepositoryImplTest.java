@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.caixabank.loansmanager.domain.exceptions.LoanApplicationNotFoundException;
 import com.caixabank.loansmanager.domain.model.LoanApplicationModel;
+import com.caixabank.loansmanager.domain.model.LoanStatus;
 import com.caixabank.loansmanager.domain.model.PageModel;
 import com.caixabank.loansmanager.domain.model.PageableModel;
 import com.caixabank.loansmanager.infrastructure.adapters.outbound.converters.OutboundConverter;
@@ -113,6 +114,28 @@ class LoanApplicationJpaRepositoryImplTest {
     when(outboundConverter.toLoanApplicationModelPage(entityPage)).thenReturn(expectedPageModel);
 
     PageModel<LoanApplicationModel> result = jpaRepositoryImpl.findAll(pageableModel);
+
+    assertEquals(1, result.getContent().size());
+    assertEquals(model, result.getContent().get(0));
+  }
+
+  @Test
+  void findByStatus_ShouldReturnPageOfModels() {
+    LoanStatus status = LoanStatus.PENDING;
+    PageableModel pageableModel = new PageableModel(0, 10, "UNSORTED");
+    org.springframework.data.domain.Pageable springPageable = PageRequest.of(0, 10);
+    LoanApplicationEntity entity = new LoanApplicationEntity();
+    Page<LoanApplicationEntity> entityPage =
+        new PageImpl<>(Collections.singletonList(entity), springPageable, 1);
+    LoanApplicationModel model = new LoanApplicationModel();
+    PageModel<LoanApplicationModel> expectedPageModel =
+        new PageModel<>(Collections.singletonList(model), 1L, 1, 1, 10, 0);
+
+    when(outboundConverter.toPageable(pageableModel)).thenReturn(springPageable);
+    when(loanApplicationRepository.findByStatus(status, springPageable)).thenReturn(entityPage);
+    when(outboundConverter.toLoanApplicationModelPage(entityPage)).thenReturn(expectedPageModel);
+
+    PageModel<LoanApplicationModel> result = jpaRepositoryImpl.findByStatus(status, pageableModel);
 
     assertEquals(1, result.getContent().size());
     assertEquals(model, result.getContent().get(0));

@@ -44,7 +44,8 @@ public class Examples {
   public static final String LOAN_APPLICATION_UUID_SAMPLE = RAW_LOAN_UUID;
 
   /**
-   * Estado de ejemplo para una solicitud de préstamo. Valor: {@value #LOAN_APPLICATION_STATUS_SAMPLE}
+   * Estado de ejemplo para una solicitud de préstamo. Valor: {@value
+   * #LOAN_APPLICATION_STATUS_SAMPLE}
    */
   public static final String LOAN_APPLICATION_STATUS_SAMPLE = RAW_LOAN_STATUS;
 
@@ -206,12 +207,12 @@ public class Examples {
             }
             """;
 
-    /**
+  /**
    * Cuerpo JSON de ejemplo para la respuesta (Response) que contiene una página ({@code Page}) de
    * resultados de solicitudes de préstamo por estado.
    */
   public static final String LOAN_APPLICATION_STATUS_PAGE_SAMPLE =
-        """
+      """
             {
                 "content": [
                     {

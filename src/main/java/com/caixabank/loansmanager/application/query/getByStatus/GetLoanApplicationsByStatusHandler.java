@@ -36,10 +36,12 @@ public class GetLoanApplicationsByStatusHandler
    * @return {@link GetAllLoanApplicationsResponse} con la lista paginada de solicitudes por estado.
    */
   @Override
-  public GetLoanApplicationsByStatusResponse handle(GetLoanApplicationsByStatusRequest inputRequest) {
+  public GetLoanApplicationsByStatusResponse handle(
+      GetLoanApplicationsByStatusRequest inputRequest) {
     log.info("Handling GetLoanApplicationsByStatusRequest with inputRequest: {}", inputRequest);
     return new GetLoanApplicationsByStatusResponse(
-        jpaRepository.findByStatus(inputRequest.getLoanStatus(), inputRequest.getPageable()), inputRequest.getPageable());
+        jpaRepository.findByStatus(inputRequest.getLoanStatus(), inputRequest.getPageable()),
+        inputRequest.getPageable());
   }
 
   /**

@@ -119,7 +119,7 @@ public interface ManagerController {
   public ResponseEntity<LoanApplicationOutput> updateLoanApplicationStatus(
       @PathVariable UUID uuid, @Valid @RequestBody LoanStatusDto loanStatusDto);
 
-      @Operation(
+  @Operation(
       summary = "Get all loan applications with a specific status",
       description = "Return all loan applications with a specific status in paginated format")
   @ApiResponses(
@@ -141,7 +141,7 @@ public interface ManagerController {
       })
   @GeneralApiDoc
   @Parameters(
-    value = {
+      value = {
         @Parameter(
             name = "status",
             description = "Status of the loan applications to search",
