@@ -1,6 +1,7 @@
 package com.caixabank.loansmanager.domain.ports.out;
 
 import com.caixabank.loansmanager.domain.model.LoanApplicationModel;
+import com.caixabank.loansmanager.domain.model.LoanStatus;
 import com.caixabank.loansmanager.domain.model.PageModel;
 import com.caixabank.loansmanager.domain.model.PageableModel;
 import java.util.UUID;
@@ -39,4 +40,13 @@ public interface LoanApplicationJpaRepository {
    * @return El modelo actualizado y persistido.
    */
   LoanApplicationModel update(LoanApplicationModel loanApplication);
+
+  /**
+   * Recupera todas las solicitudes de préstamo por estado de forma paginada.
+   *
+   * @param status El estado de la solicitud.
+   * @param pageableModel Los criterios de paginación.
+   * @return Una página de modelos de solicitud de préstamo.
+   */
+  PageModel<LoanApplicationModel> findByStatus(LoanStatus status, PageableModel pageableModel);
 }

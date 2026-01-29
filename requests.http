@@ -5,11 +5,8 @@
 @manager_path = /api/v1/manager
 @system_path = /api/v1/system
 @auth_path = /api/v1/auth
-@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIxMTExMTExMUgiLCJzdWIiOiJtYW5hZ2VyIiwiaWF0IjoxNzY5NzAxMTEyLCJleHAiOjE3Njk3MDEyOTJ9.cxWbkt0DTXSr5K8tWrjEgKXYHrtDXl7tVRScXVUyV4w
-@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzY5MzU3NDYyLCJleHAiOjE3Njk5NjIyNjJ9.PaW0K3yWVuJsoxx53hOrp5y49Re-zN0GrWKXH57jVsM
-
-### Prueba publica
-GET http://{{hostname}}:{{port}}/public/?page=0&size=10&sort=requestedAmount,desc
+@token = eyJhbGciOiJIUzI1NiJ9.eyJkbmkiOiIxMTExMTExMUgiLCJzdWIiOiJtYW5hZ2VyIiwiaWF0IjoxNzY5NzAzNzc3LCJleHAiOjE3Njk3MDM5NTd9.EQG9B6VTSGvk1_K6BqHWrosHrjKkUFp-8wNgR_VVuZA
+@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW5hZ2VyIiwiaWF0IjoxNzY5NzAzMTc4LCJleHAiOjE3NzAzMDc5Nzh9.TM-3-i7fLU40NNvU79kUCbB_hyalcOYwpnack47-k2M
 
 ### Registrar usuario
 POST {{base_url}}{{auth_path}}/register
@@ -64,7 +61,7 @@ Content-Type: application/json
 }
 
 ### Obtener todas las solicitudes
-GET {{base_url}}{{system_path}}/?sort=requestedAmount,desc
+GET {{base_url}}{{system_path}}/
 Authorization: Bearer {{token}}
 
 ### Login Manager
@@ -88,3 +85,7 @@ Authorization: Bearer {{token}}
 {
     "status": "REJECTED"
 }
+
+### Obtener todas las solicitudes pendientes
+GET {{base_url}}{{manager_path}}/status/PENDING?sort=requestedAmount,desc
+Authorization: Bearer {{token}}
