@@ -49,17 +49,23 @@ public class SecurityConfig {
                 authReq
                     // Permite acceso sin autenticación a endpoints públicos y de
                     // documentación
-                    .requestMatchers("/v3/api-docs")
+                    .requestMatchers("/v3/api-docs/**")
                     .permitAll() // OpenAPI/Swagger Docs
-                    .requestMatchers("/swagger-ui/index.html")
+                    .requestMatchers("/swagger-ui/**")
+                    .permitAll() // Swagger
+                    .requestMatchers("/swagger-ui.html")
                     .permitAll() // Swagger
                     .requestMatchers("/error")
                     .permitAll() // Error
                     .requestMatchers("/h2-console/**")
                     .permitAll() // H2 Console
-                    .requestMatchers("/api/v1/auth/**")
+                    .requestMatchers("/api/v1/auth/register")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/login")
                     .permitAll()
                     .requestMatchers("/actuator/**")
+                    .permitAll()
+                    .requestMatchers("/public/**")
                     .permitAll()
                     // Cualquier otra petición requiere autenticación
                     .anyRequest()

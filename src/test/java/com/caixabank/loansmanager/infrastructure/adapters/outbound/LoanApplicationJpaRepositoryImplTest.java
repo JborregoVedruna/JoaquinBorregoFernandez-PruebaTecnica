@@ -99,7 +99,7 @@ class LoanApplicationJpaRepositoryImplTest {
 
   @Test
   void findAll_ShouldReturnPageOfModels() {
-    PageableModel pageableModel = new PageableModel(0, 10);
+    PageableModel pageableModel = new PageableModel(0, 10, "");
     org.springframework.data.domain.Pageable springPageable = PageRequest.of(0, 10);
     LoanApplicationEntity entity = new LoanApplicationEntity();
     Page<LoanApplicationEntity> entityPage =

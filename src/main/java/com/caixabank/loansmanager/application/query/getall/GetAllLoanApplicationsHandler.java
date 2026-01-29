@@ -37,7 +37,8 @@ public class GetAllLoanApplicationsHandler
   @Override
   public GetAllLoanApplicationsResponse handle(GetAllLoanApplicationsRequest inputRequest) {
     log.info("Handling GetAllLoanApplicationsRequest with inputRequest: {}", inputRequest);
-    return new GetAllLoanApplicationsResponse(jpaRepository.findAll(inputRequest.getPageable()));
+    return new GetAllLoanApplicationsResponse(
+        jpaRepository.findAll(inputRequest.getPageable()), inputRequest.getPageable());
   }
 
   /**
