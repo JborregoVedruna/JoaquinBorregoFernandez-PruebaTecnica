@@ -1,6 +1,7 @@
 package com.caixabank.loansmanager.infrastructure.adapters.inbound.exceptionhandler;
 
 import com.caixabank.loansmanager.domain.exceptions.LoanApplicationNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.RollbackException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -511,5 +513,56 @@ public class HandlerExceptionController extends ResponseEntityExceptionHandler {
     // Devolvemos la respuesta con el ProblemDetail y el estado BAD_REQUEST.
     return handleExceptionInternal(
         ex, problemDetail, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+  }
+
+  /**
+   * Maneja excepciones relacionadas con JWT expirados (e.g. ExpiredJwtException). Genera una
+   * respuesta 401 Unauthorized.
+   *
+   * @param ex La excepción {@code ExpiredJwtException}.
+   * @param request La solicitud web actual.
+   * @return {@code ResponseEntity} con el estado 401.
+   */
+  @ExceptionHandler(ExpiredJwtException.class)
+  protected ResponseEntity<Object> handleJwtException(ExpiredJwtException ex, WebRequest request) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.UNAUTHORIZED,
+            ex.getMessage() != null && !ex.getMessage().trim().isEmpty()
+                ? ex.getMessage()
+                : "Expired JWT token.");
+    problemDetail.setTitle("ExpiredJwtException: Unauthorized");
+    problemDetail.setType(
+        URI.create(
+            "https://javadoc.io/doc/io.jsonwebtoken/jjwt/0.9.1/io/jsonwebtoken/ExpiredJwtException.html"));
+    log.warn("Expired JWT Exception (401): {}", ex.getMessage());
+    return handleExceptionInternal(
+        ex, problemDetail, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+  }
+
+  /**
+   * Maneja excepciones relacionadas con JWT no autorizados (e.g. AuthorizationDeniedException).
+   * Genera una respuesta 403 Forbidden.
+   *
+   * @param ex La excepción {@code AuthorizationDeniedException}.
+   * @param request La solicitud web actual.
+   * @return {@code ResponseEntity} con el estado 403.
+   */
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  protected ResponseEntity<Object> handleJwtException(
+      AuthorizationDeniedException ex, WebRequest request) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.FORBIDDEN,
+            ex.getMessage() != null && !ex.getMessage().trim().isEmpty()
+                ? ex.getMessage()
+                : "Authorization denied.");
+    problemDetail.setTitle("AuthorizationDeniedException: Forbidden");
+    problemDetail.setType(
+        URI.create(
+            "https://docs.spring.io/spring-security/reference/api/java/org/springframework/security/authorization/AuthorizationDeniedException.html"));
+    log.warn("Authorization Denied Exception (403): {}", ex.getMessage());
+    return handleExceptionInternal(
+        ex, problemDetail, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
   }
 }

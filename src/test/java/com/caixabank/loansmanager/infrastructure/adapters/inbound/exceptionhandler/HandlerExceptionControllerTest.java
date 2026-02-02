@@ -480,4 +480,20 @@ class HandlerExceptionControllerTest {
     ProblemDetail body = (ProblemDetail) response.getBody();
     assertTrue(body.getDetail().contains("does not exist"));
   }
+
+  // ========== JwtException ==========
+
+  /** Verifica la gestión de ExpiredJwtException (Token expirado). */
+  @Test
+  void handleJwtException_ShouldReturnUnauthorized() {
+    io.jsonwebtoken.ExpiredJwtException ex =
+        new io.jsonwebtoken.ExpiredJwtException(null, null, "Token expired");
+
+    ResponseEntity<Object> response = handler.handleJwtException(ex, request);
+
+    assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    ProblemDetail body = (ProblemDetail) response.getBody();
+    assertEquals("Token expired", body.getDetail());
+    assertEquals("ExpiredJwtException: Unauthorized", body.getTitle());
+  }
 }
