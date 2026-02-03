@@ -2,6 +2,7 @@ package com.caixabank.loansmanager.infrastructure.adapters.outbound;
 
 import com.caixabank.loansmanager.domain.exceptions.LoanApplicationNotFoundException;
 import com.caixabank.loansmanager.domain.model.LoanApplicationModel;
+import com.caixabank.loansmanager.domain.model.LoanStatus;
 import com.caixabank.loansmanager.domain.model.PageModel;
 import com.caixabank.loansmanager.domain.model.PageableModel;
 import com.caixabank.loansmanager.domain.ports.out.LoanApplicationJpaRepository;
@@ -97,5 +98,19 @@ public class LoanApplicationJpaRepositoryImpl implements LoanApplicationJpaRepos
     log.info("Updating loan application to {}", loanApplication);
     return outboundConverter.toLoanApplicationModel(
         loanApplicationRepository.save(outboundConverter.toLoanApplicationEntity(loanApplication)));
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Busca las solicitudes de préstamo por estado, lanzando excepción si no se encuentran.
+   */
+  @Override
+  public PageModel<LoanApplicationModel> findByStatus(
+      LoanStatus status, PageableModel pageableModel) {
+    log.info("Retrieving all loan applications with status {}", status);
+    return outboundConverter.toLoanApplicationModelPage(
+        loanApplicationRepository.findByStatus(
+            status, outboundConverter.toPageable(pageableModel)));
   }
 }

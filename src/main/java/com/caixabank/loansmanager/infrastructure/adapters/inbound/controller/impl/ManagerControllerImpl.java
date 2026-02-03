@@ -2,7 +2,10 @@ package com.caixabank.loansmanager.infrastructure.adapters.inbound.controller.im
 
 import com.caixabank.loansmanager.application.command.updateloanapplicationstatus.UpdateLoanApplicationStatusRequest;
 import com.caixabank.loansmanager.application.mediator.Mediator;
+import com.caixabank.loansmanager.application.query.getByStatus.GetLoanApplicationsByStatusRequest;
+import com.caixabank.loansmanager.application.query.getByStatus.GetLoanApplicationsByStatusResponse;
 import com.caixabank.loansmanager.application.query.getbyid.GetLoanApplicationsByIdRequest;
+import com.caixabank.loansmanager.domain.model.LoanStatus;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.controller.ManagerController;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.converters.InboundConverter;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.input.LoanStatusDto;
@@ -11,6 +14,8 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,5 +69,24 @@ public class ManagerControllerImpl implements ManagerController {
                     .dispatch(
                         new UpdateLoanApplicationStatusRequest(uuid, loanStatusDto.getStatus()))
                     .getLoanApplication()));
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Despacha una consulta por estado al mediador y devuelve el resultado convertido.
+   */
+  @Override
+  public ResponseEntity<Page<LoanApplicationOutput>> getLoanApplicationByStatus(
+      String status, Pageable pageable) {
+    GetLoanApplicationsByStatusResponse response =
+        mediator.dispatch(
+            new GetLoanApplicationsByStatusRequest(
+                Enum.valueOf(LoanStatus.class, status),
+                inboundConverter.toPageableModel(pageable)));
+    return ResponseEntity.ok()
+        .body(
+            inboundConverter.toLoanApplicationOutputPage(
+                response.getLoanApplications(), response.getPageable()));
   }
 }

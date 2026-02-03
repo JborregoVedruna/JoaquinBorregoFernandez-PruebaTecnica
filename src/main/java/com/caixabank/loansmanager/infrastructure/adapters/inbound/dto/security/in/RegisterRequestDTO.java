@@ -1,6 +1,7 @@
 package com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.security.in;
 
 import com.caixabank.loansmanager.config.apidoc.schema.Examples;
+import com.caixabank.loansmanager.domain.validations.DNI;
 import com.caixabank.loansmanager.domain.validations.Password;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -42,7 +43,6 @@ public class RegisterRequestDTO {
       description = "The DNI of the user",
       example = Examples.RAW_DNI,
       requiredMode = Schema.RequiredMode.REQUIRED)
-  @NotBlank(message = "userDni is required and must not be blank")
-  @Size(min = 9, max = 9, message = "userDni must be exactly 9 characters long")
+  @DNI
   private String userDni;
 }

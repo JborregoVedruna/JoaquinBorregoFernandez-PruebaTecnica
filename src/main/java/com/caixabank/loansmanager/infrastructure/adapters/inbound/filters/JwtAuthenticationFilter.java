@@ -6,14 +6,13 @@ import com.caixabank.loansmanager.infrastructure.adapters.inbound.converters.Inb
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.security.UserDTO;
 import com.caixabank.loansmanager.infrastructure.adapters.outbound.converters.OutboundConverter;
 import com.caixabank.loansmanager.infrastructure.adapters.outbound.entities.UserEntity;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +22,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 /**
  * Filtro de seguridad que intercepta todas las peticiones para validar la presencia y validez de un
@@ -31,7 +31,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * dinámicamente desde la base de datos.
  */
 @Component
-@AllArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -46,6 +45,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   /** Conversor para transformar entidades de persistencia en modelos de dominio. */
   private final OutboundConverter outboundConverter;
+
+  /** Resolver para delegar excepciones al controlador global. */
+  private final HandlerExceptionResolver resolver;
+
+  public JwtAuthenticationFilter(
+      JWTProvider jwtProvider,
+      UserDetailsService userDetailsService,
+      InboundConverter inboundConverter,
+      OutboundConverter outboundConverter,
+      @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+    this.jwtProvider = jwtProvider;
+    this.userDetailsService = userDetailsService;
+    this.inboundConverter = inboundConverter;
+    this.outboundConverter = outboundConverter;
+    this.resolver = resolver;
+  }
 
   /** Prefijo de la cabecera de autorización */
   private static final String BEARER_PREFIX = "Bearer ";
@@ -78,18 +93,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       // inválido
       // (expirado, mal firmado, corrupto), esta llamada lanzará una excepción.
       username = jwtProvider.getUsernameFromAccessToken(token);
-    } catch (JwtException e) {
-      // Captura errores específicos de JWT (token expirado, firma inválida, etc.)
-      log.warn(
-          "Error de token JWT de Acceso (inválido/expirado) en {}: {}",
-          request.getRequestURI(),
-          e.getMessage());
-      filterChain.doFilter(request, response);
-      return;
     } catch (Exception e) {
-      // Captura de otras excepciones inesperadas (ej. problemas de decodificación)
-      log.error("Error inesperado durante el procesamiento del token: {}", e.getMessage());
-      filterChain.doFilter(request, response);
+      log.warn("Error processing JWT: {}", e.getMessage());
+      resolver.resolveException(request, response, null, e);
       return;
     }
 

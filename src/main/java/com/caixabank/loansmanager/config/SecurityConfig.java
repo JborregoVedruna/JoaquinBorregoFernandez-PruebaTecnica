@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -43,23 +44,32 @@ public class SecurityConfig {
         // 1. Deshabilita la protección CSRF (CSRF es innecesario para APIs REST sin
         // sesiones)
         .csrf(csrf -> csrf.disable())
+        .cors(Customizer.withDefaults())
         // 2. Configura las reglas de autorización para las peticiones HTTP
         .authorizeHttpRequests(
             authReq ->
                 authReq
                     // Permite acceso sin autenticación a endpoints públicos y de
                     // documentación
-                    .requestMatchers("/v3/api-docs")
+                    .requestMatchers("/v3/api-docs/**")
                     .permitAll() // OpenAPI/Swagger Docs
-                    .requestMatchers("/swagger-ui/index.html")
+                    .requestMatchers("/swagger-ui/**")
+                    .permitAll() // Swagger
+                    .requestMatchers("/swagger-ui.html")
                     .permitAll() // Swagger
                     .requestMatchers("/error")
                     .permitAll() // Error
                     .requestMatchers("/h2-console/**")
                     .permitAll() // H2 Console
-                    .requestMatchers("/api/v1/auth/**")
+                    .requestMatchers("/api/v1/auth/register")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/login")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/refresh")
                     .permitAll()
                     .requestMatchers("/actuator/**")
+                    .permitAll()
+                    .requestMatchers("/public/**")
                     .permitAll()
                     // Cualquier otra petición requiere autenticación
                     .anyRequest()

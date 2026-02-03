@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Interfaz Mapper para la conversión entre modelos de dominio y entidades de persistencia
@@ -40,7 +41,14 @@ public interface OutboundConverter {
 
   /** Convierte el modelo de paginación del dominio al objeto Pageable de Spring Data. */
   public default Pageable toPageable(PageableModel pageableModel) {
-    return PageRequest.of(pageableModel.getPage(), pageableModel.getSize());
+    if (pageableModel.getSort().equals("UNSORTED")) {
+      return PageRequest.of(pageableModel.getPage(), pageableModel.getSize());
+    }
+    String[] sort = pageableModel.getSort().split(": ");
+    return PageRequest.of(
+        pageableModel.getPage(),
+        pageableModel.getSize(),
+        sort[1].equals("ASC") ? Sort.by(sort[0]).ascending() : Sort.by(sort[0]).descending());
   }
 
   /** Convierte una página de entidades de base de datos en una página de modelos de dominio. */

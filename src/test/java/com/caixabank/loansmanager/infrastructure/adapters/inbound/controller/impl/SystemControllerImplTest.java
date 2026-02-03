@@ -45,11 +45,12 @@ class SystemControllerImplTest {
   void getAllLoanApplications_ShouldReturnOk() {
     Pageable pageable = PageRequest.of(0, 10);
     com.caixabank.loansmanager.domain.model.PageableModel pageableModel =
-        new com.caixabank.loansmanager.domain.model.PageableModel(0, 10);
+        new com.caixabank.loansmanager.domain.model.PageableModel(0, 10, "");
     LoanApplicationModel model = new LoanApplicationModel();
     PageModel<LoanApplicationModel> pageModel =
         new PageModel<>(Collections.singletonList(model), 1L, 1, 1, 10, 0);
-    GetAllLoanApplicationsResponse response = new GetAllLoanApplicationsResponse(pageModel);
+    GetAllLoanApplicationsResponse response =
+        new GetAllLoanApplicationsResponse(pageModel, pageableModel);
     LoanApplicationOutput output = new LoanApplicationOutput();
     org.springframework.data.domain.Page<LoanApplicationOutput> outputPage =
         new org.springframework.data.domain.PageImpl<>(
@@ -57,7 +58,8 @@ class SystemControllerImplTest {
 
     when(inboundConverter.toPageableModel(pageable)).thenReturn(pageableModel);
     when(mediator.dispatch(any(GetAllLoanApplicationsRequest.class))).thenReturn(response);
-    when(inboundConverter.toLoanApplicationOutputPage(pageModel)).thenReturn(outputPage);
+    when(inboundConverter.toLoanApplicationOutputPage(pageModel, pageableModel))
+        .thenReturn(outputPage);
 
     ResponseEntity<Page<LoanApplicationOutput>> result =
         controller.getAllLoanApplications(pageable);

@@ -52,6 +52,9 @@ class JwtAuthenticationFilterTest {
   /** Mock de la cadena de filtros. */
   @Mock private FilterChain filterChain;
 
+  /** Mock del resolver de excepciones. */
+  @Mock private org.springframework.web.servlet.HandlerExceptionResolver resolver;
+
   /** Filtro bajo prueba con mocks inyectados. */
   @InjectMocks private JwtAuthenticationFilter filter;
 
@@ -94,29 +97,32 @@ class JwtAuthenticationFilterTest {
 
   /** Prueba que el filtro no autentique cuando el token proporcionado es inválido por JWT. */
   @Test
-  void doFilterInternal_WithInvalidToken_ShouldNotAuthenticate() throws Exception {
+  void doFilterInternal_WithInvalidToken_ShouldDelegatetoResolver_WhenTokenIsInvalid()
+      throws Exception {
     SecurityContextHolder.clearContext();
     when(request.getHeader("Authorization")).thenReturn("Bearer invalid-token");
-    when(jwtProvider.getUsernameFromAccessToken("invalid-token"))
-        .thenThrow(new JwtException("Invalid"));
+    JwtException exception = new JwtException("Invalid");
+    when(jwtProvider.getUsernameFromAccessToken("invalid-token")).thenThrow(exception);
 
     filter.doFilterInternal(request, response, filterChain);
 
-    verify(filterChain).doFilter(request, response);
+    verify(filterChain, never()).doFilter(request, response);
+    verify(resolver).resolveException(request, response, null, exception);
     assert SecurityContextHolder.getContext().getAuthentication() == null;
   }
 
   /** Prueba la gestión de excepciones genéricas durante la validación del token. */
   @Test
-  void doFilterInternal_WithGenericException_ShouldNotAuthenticate() throws Exception {
+  void doFilterInternal_WithGenericException_ShouldDelegatetoResolver() throws Exception {
     SecurityContextHolder.clearContext();
     when(request.getHeader("Authorization")).thenReturn("Bearer error-token");
-    when(jwtProvider.getUsernameFromAccessToken("error-token"))
-        .thenThrow(new RuntimeException("Error"));
+    RuntimeException exception = new RuntimeException("Error");
+    when(jwtProvider.getUsernameFromAccessToken("error-token")).thenThrow(exception);
 
     filter.doFilterInternal(request, response, filterChain);
 
-    verify(filterChain).doFilter(request, response);
+    verify(filterChain, never()).doFilter(request, response);
+    verify(resolver).resolveException(request, response, null, exception);
     assert SecurityContextHolder.getContext().getAuthentication() == null;
   }
 

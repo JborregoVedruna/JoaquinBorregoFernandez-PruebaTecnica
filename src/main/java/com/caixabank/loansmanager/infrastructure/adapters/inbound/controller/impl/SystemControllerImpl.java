@@ -2,6 +2,7 @@ package com.caixabank.loansmanager.infrastructure.adapters.inbound.controller.im
 
 import com.caixabank.loansmanager.application.mediator.Mediator;
 import com.caixabank.loansmanager.application.query.getall.GetAllLoanApplicationsRequest;
+import com.caixabank.loansmanager.application.query.getall.GetAllLoanApplicationsResponse;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.controller.SystemController;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.converters.InboundConverter;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.output.LoanApplicationOutput;
@@ -39,13 +40,12 @@ public class SystemControllerImpl implements SystemController {
   @Override
   public ResponseEntity<Page<LoanApplicationOutput>> getAllLoanApplications(Pageable pageable) {
     log.info("Received get all loan applications request");
+    GetAllLoanApplicationsResponse response =
+        mediator.dispatch(
+            new GetAllLoanApplicationsRequest(inboundConverter.toPageableModel(pageable)));
     return ResponseEntity.ok()
         .body(
             inboundConverter.toLoanApplicationOutputPage(
-                mediator
-                    .dispatch(
-                        new GetAllLoanApplicationsRequest(
-                            inboundConverter.toPageableModel(pageable)))
-                    .getLoanApplications()));
+                response.getLoanApplications(), response.getPageable()));
   }
 }

@@ -19,4 +19,7 @@ public class PageableModel {
 
   /** La cantidad de elementos por página deseada. */
   private int size;
+
+  /** La propiedad de ordenamiento. */
+  private String sort;
 }
