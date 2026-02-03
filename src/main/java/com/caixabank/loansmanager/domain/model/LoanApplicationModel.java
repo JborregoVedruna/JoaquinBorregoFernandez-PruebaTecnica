@@ -32,4 +32,22 @@ public class LoanApplicationModel implements Serializable {
 
   /** El usuario que ha realizado esta solicitud. */
   private UserModel userModel;
+
+  private void setStatus(LoanStatus status) {
+    this.status = status;
+  }
+
+  public void updateStatus(LoanStatus newStatus) {
+    if (this.status == null) {
+      if (newStatus == LoanStatus.PENDING) {
+        this.setStatus(newStatus);
+      } else {
+        throw new IllegalArgumentException("Initial status must be PENDING");
+      }
+    } else if (this.status.isValidChange(newStatus)) {
+      this.setStatus(newStatus);
+    } else {
+      throw new IllegalArgumentException("Invalid status change");
+    }
+  }
 }
