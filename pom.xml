@@ -31,7 +31,7 @@
 		<sonar.projectKey>caixabank</sonar.projectKey>
 		<sonar.projectName>caixabank</sonar.projectName>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.token>your_sonar_token</sonar.token>
+		<sonar.token>sqp_cc6fefa19948d8778a8a10b4c4bc17445b46f125</sonar.token>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
