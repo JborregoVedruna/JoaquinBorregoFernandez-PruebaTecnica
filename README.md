@@ -188,6 +188,12 @@ Utilizando la librería **Spring Boot Docker Compose Support**, el proyecto es c
 - **Swagger**: Documentación de la API.
 - **Spring Actuator**: Endpoint de monitoreo para supervisar el estado y métricas de salud de la aplicación.
 
+### 10. Complementos
+
+- **React**: Interfaz gráfica con React para poder probar los diferentes endpoints segun Rol. Puedes encontrarla en el repositorio [https://github.com/JborregoVedruna/JoaquinBorregoFernandez-PruebaTecnicaFront](https://github.com/JborregoVedruna/JoaquinBorregoFernandez-PruebaTecnicaFront)
+- **Flask**: Microservicio realizado con Python y Flask que simula una lista de deudores al estilo Asnef. Puedes encontrarla en el repositorio [https://github.com/JborregoVedruna/defaulters-list-api](https://github.com/JborregoVedruna/defaulters-list-api)
+- **MCP**: Servidor MCP con Python para darle a github copilot la posibilidad de loguearse como manager, de consultar las solicitudes pendientes, consultar la lista de deudores por dni y de cambiar el estado de una solicitud. Esto nos permite realizar prompts como "Comprueba las solicitudes pendientes de loansmanager api y verifica mediante el dni de los applicant que dichos applicant no tienen deudas pendientes. A todos los que tengan deudas pendientes, cambia el estado de su loanapplication a REJECTED". Puedes encontrarla en el repositorio [https://github.com/JborregoVedruna/loanapplications-mcp](https://github.com/JborregoVedruna/loanapplications-mcp)
+
 ---
 
 ## 📈 Mejoras y Extensiones Futuras
