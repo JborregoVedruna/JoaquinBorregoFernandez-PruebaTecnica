@@ -35,7 +35,7 @@ class GetAllLoanApplicationsHandlerTest {
    */
   @Test
   void handle_ShouldReturnResponse_WhenRepositoryReturnsPage() {
-    PageableModel pageableModel = new PageableModel(0, 10);
+    PageableModel pageableModel = new PageableModel(0, 10, "");
     GetAllLoanApplicationsRequest request = new GetAllLoanApplicationsRequest(pageableModel);
     PageModel<LoanApplicationModel> pageModel =
         new PageModel<>(Collections.emptyList(), 0, 1, 0, 10, 0);

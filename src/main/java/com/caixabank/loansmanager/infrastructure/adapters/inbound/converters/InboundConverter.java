@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Interfaz Mapper para la conversión entre los DTOs de la capa de infraestructura (inbound) y los
@@ -139,7 +140,8 @@ public interface InboundConverter {
    * @return El modelo de paginación del dominio.
    */
   public default PageableModel toPageableModel(Pageable pageable) {
-    return new PageableModel(pageable.getPageNumber(), pageable.getPageSize());
+    return new PageableModel(
+        pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().toString());
   }
 
   /**
@@ -149,10 +151,22 @@ public interface InboundConverter {
    * @return La página de DTOs preparada para la respuesta REST.
    */
   public default Page<LoanApplicationOutput> toLoanApplicationOutputPage(
-      PageModel<LoanApplicationModel> pageModel) {
+      PageModel<LoanApplicationModel> pageModel, PageableModel pageableModel) {
+    PageRequest pr;
+    if (pageableModel.getSort().equals("UNSORTED")) {
+      pr = PageRequest.of(pageModel.getNumber(), pageModel.getSize());
+    } else {
+      String[] sort = pageableModel.getSort().split(": ");
+      pr =
+          PageRequest.of(
+              pageableModel.getPage(),
+              pageableModel.getSize(),
+              sort[1].equals("ASC") ? Sort.by(sort[0]).ascending() : Sort.by(sort[0]).descending());
+    }
+
     return new PageImpl<>(
         pageModel.getContent().stream().map(this::toLoanApplicationOutput).toList(),
-        PageRequest.of(pageModel.getNumber(), pageModel.getSize()),
+        pr,
         pageModel.getTotalElements());
   }
 }

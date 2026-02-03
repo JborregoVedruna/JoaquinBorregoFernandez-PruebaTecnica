@@ -8,12 +8,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -115,4 +118,44 @@ public interface ManagerController {
   @PatchMapping("/{uuid}")
   public ResponseEntity<LoanApplicationOutput> updateLoanApplicationStatus(
       @PathVariable UUID uuid, @Valid @RequestBody LoanStatusDto loanStatusDto);
+
+  @Operation(
+      summary = "Get all loan applications with a specific status",
+      description = "Return all loan applications with a specific status in paginated format")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved loan applications",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Page.class),
+                  examples = {
+                    @ExampleObject(
+                        name = "Loan Application PENDING Page Sample",
+                        description = "A sample loan application page with PENDING status",
+                        value = Examples.LOAN_APPLICATION_PAGE_SAMPLE)
+                  })
+            })
+      })
+  @GeneralApiDoc
+  @Parameters(
+      value = {
+        @Parameter(
+            name = "status",
+            description = "Status of the loan applications to search",
+            required = true,
+            schema = @Schema(type = "status"),
+            example = Examples.LOAN_APPLICATION_UUID_SAMPLE),
+        @Parameter(
+            name = "pageable",
+            description = "Pageable parameters",
+            required = false,
+            schema = @Schema(implementation = Pageable.class),
+            example = Examples.PAGEABLE_SAMPLE)
+      })
+  @GetMapping("/status/{status}")
+  public ResponseEntity<Page<LoanApplicationOutput>> getLoanApplicationByStatus(
+      @PathVariable String status, Pageable pageable);
 }

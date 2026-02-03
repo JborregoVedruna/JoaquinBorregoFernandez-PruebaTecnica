@@ -46,12 +46,8 @@ public class UpdateLoanApplicationStatusHandler
     log.info("Retrieving LoanApplication with id: {}", inputRequest.getUuid());
     LoanApplicationModel loanApplicationModel = jpaRepository.findById(inputRequest.getUuid());
     log.info("Verificando si el cambio de estado es valido");
-    if (!loanApplicationModel.getStatus().isValidChange(inputRequest.getLoanStatus())) {
-      log.error("Invalid status change");
-      throw new IllegalArgumentException("Invalid status change");
-    }
     log.info("Actualizando estado de la solicitud");
-    loanApplicationModel.setStatus(inputRequest.getLoanStatus());
+    loanApplicationModel.updateStatus(inputRequest.getLoanStatus());
     log.info("Estado de la solicitud actualizado");
     return new UpdateLoanApplicationStatusResponse(jpaRepository.update(loanApplicationModel));
   }

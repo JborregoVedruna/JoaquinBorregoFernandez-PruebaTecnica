@@ -1,4 +1,4 @@
-package com.caixabank.loansmanager.application.query.getall;
+package com.caixabank.loansmanager.application.query.getByStatus;
 
 import com.caixabank.loansmanager.domain.ports.in.RequestHandler;
 import com.caixabank.loansmanager.domain.ports.out.LoanApplicationJpaRepository;
@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * Manejador encargado de recuperar todas las solicitudes de préstamo de forma paginada.
+ * Manejador encargado de recuperar todas las solicitudes de préstamo por estado de forma paginada.
  *
  * <p>Implementa {@link RequestHandler} para procesar peticiones de tipo {@link
- * GetAllLoanApplicationsRequest}.
+ * GetLoanApplicationsByStatusRequest}.
  *
  * <p>{@code @Slf4j}: Habilita el registro de logs. {@code @Service}: Define esta clase como un
  * servicio de Spring. {@code @AllArgsConstructor}: Genera el constructor para inyección de
@@ -19,26 +19,29 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class GetAllLoanApplicationsHandler
-    implements RequestHandler<GetAllLoanApplicationsRequest, GetAllLoanApplicationsResponse> {
+public class GetLoanApplicationsByStatusHandler
+    implements RequestHandler<
+        GetLoanApplicationsByStatusRequest, GetLoanApplicationsByStatusResponse> {
 
   /** Repositorio de persistencia JPA para las solicitudes de préstamo. */
   private final LoanApplicationJpaRepository jpaRepository;
 
   /**
-   * Procesa la solicitud para obtener todas las solicitudes de préstamo.
+   * Procesa la solicitud para obtener todas las solicitudes de préstamo por estado.
    *
    * <p>1. Registra la petición de consulta recibida. 2. Recupera del repositorio la página de
    * solicitudes según los criterios recibidos. 3. Retorna la respuesta con los datos de paginación.
    *
    * @param inputRequest El objeto de solicitud con la información de paginación.
-   * @return {@link GetAllLoanApplicationsResponse} con la lista paginada de solicitudes.
+   * @return {@link GetAllLoanApplicationsResponse} con la lista paginada de solicitudes por estado.
    */
   @Override
-  public GetAllLoanApplicationsResponse handle(GetAllLoanApplicationsRequest inputRequest) {
-    log.info("Handling GetAllLoanApplicationsRequest with inputRequest: {}", inputRequest);
-    return new GetAllLoanApplicationsResponse(
-        jpaRepository.findAll(inputRequest.getPageable()), inputRequest.getPageable());
+  public GetLoanApplicationsByStatusResponse handle(
+      GetLoanApplicationsByStatusRequest inputRequest) {
+    log.info("Handling GetLoanApplicationsByStatusRequest with inputRequest: {}", inputRequest);
+    return new GetLoanApplicationsByStatusResponse(
+        jpaRepository.findByStatus(inputRequest.getLoanStatus(), inputRequest.getPageable()),
+        inputRequest.getPageable());
   }
 
   /**
@@ -47,7 +50,7 @@ public class GetAllLoanApplicationsHandler
    * @return La clase {@link GetAllLoanApplicationsRequest}.
    */
   @Override
-  public Class<GetAllLoanApplicationsRequest> getRequestType() {
-    return GetAllLoanApplicationsRequest.class;
+  public Class<GetLoanApplicationsByStatusRequest> getRequestType() {
+    return GetLoanApplicationsByStatusRequest.class;
   }
 }

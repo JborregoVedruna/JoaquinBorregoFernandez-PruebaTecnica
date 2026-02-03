@@ -41,7 +41,7 @@ public class CreateLoanApplicationHandler
   public CreateLoanApplicationResponse handle(CreateLoanApplicationRequest inputRequest) {
     log.info("Handling CreateLoanApplicationRequest with inputRequest: {}", inputRequest);
     inputRequest.getLoanApplication().setCreatedDate(LocalDateTime.now());
-    inputRequest.getLoanApplication().setStatus(LoanStatus.PENDING);
+    inputRequest.getLoanApplication().updateStatus(LoanStatus.PENDING);
     inputRequest.getLoanApplication().setUserModel(inputRequest.getUserModel());
     return new CreateLoanApplicationResponse(jpaRepository.save(inputRequest.getLoanApplication()));
   }

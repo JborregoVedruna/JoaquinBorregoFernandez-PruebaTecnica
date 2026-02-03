@@ -7,19 +7,28 @@ import static org.mockito.Mockito.when;
 import com.caixabank.loansmanager.application.command.updateloanapplicationstatus.UpdateLoanApplicationStatusRequest;
 import com.caixabank.loansmanager.application.command.updateloanapplicationstatus.UpdateLoanApplicationStatusResponse;
 import com.caixabank.loansmanager.application.mediator.Mediator;
+import com.caixabank.loansmanager.application.query.getByStatus.GetLoanApplicationsByStatusRequest;
+import com.caixabank.loansmanager.application.query.getByStatus.GetLoanApplicationsByStatusResponse;
 import com.caixabank.loansmanager.application.query.getbyid.GetLoanApplicationsByIdRequest;
 import com.caixabank.loansmanager.application.query.getbyid.GetLoanApplicationsByIdResponse;
 import com.caixabank.loansmanager.domain.model.LoanApplicationModel;
 import com.caixabank.loansmanager.domain.model.LoanStatus;
+import com.caixabank.loansmanager.domain.model.PageModel;
+import com.caixabank.loansmanager.domain.model.PageableModel;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.converters.InboundConverter;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.input.LoanStatusDto;
 import com.caixabank.loansmanager.infrastructure.adapters.inbound.dto.output.LoanApplicationOutput;
+import java.util.Collections;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -75,5 +84,32 @@ class ManagerControllerImplTest {
 
     assertEquals(HttpStatus.OK, result.getStatusCode());
     assertEquals(output, result.getBody());
+  }
+
+  /** Prueba que la obtención de solicitudes por estado devuelva un estado 200 (OK). */
+  @Test
+  void getLoanApplicationByStatus_ShouldReturnOk() {
+    String status = "PENDING";
+    Pageable pageable = PageRequest.of(0, 10);
+    PageableModel pageableModel = new PageableModel(0, 10, "UNSORTED");
+    LoanApplicationModel model = new LoanApplicationModel();
+    PageModel<LoanApplicationModel> pageModel =
+        new PageModel<>(Collections.singletonList(model), 1, 1, 1, 10, 0);
+    GetLoanApplicationsByStatusResponse response =
+        new GetLoanApplicationsByStatusResponse(pageModel, pageableModel);
+    LoanApplicationOutput output = new LoanApplicationOutput();
+    Page<LoanApplicationOutput> outputPage =
+        new PageImpl<>(Collections.singletonList(output), pageable, 1);
+
+    when(inboundConverter.toPageableModel(pageable)).thenReturn(pageableModel);
+    when(mediator.dispatch(any(GetLoanApplicationsByStatusRequest.class))).thenReturn(response);
+    when(inboundConverter.toLoanApplicationOutputPage(pageModel, pageableModel))
+        .thenReturn(outputPage);
+
+    ResponseEntity<Page<LoanApplicationOutput>> result =
+        controller.getLoanApplicationByStatus(status, pageable);
+
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertEquals(outputPage, result.getBody());
   }
 }

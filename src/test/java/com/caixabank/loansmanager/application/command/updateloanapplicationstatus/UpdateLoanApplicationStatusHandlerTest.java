@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * Clase de prueba unitaria para {@link UpdateLoanApplicationStatusHandler}.
@@ -38,7 +39,7 @@ class UpdateLoanApplicationStatusHandlerTest {
   void handle_ShouldUpdateStatus_WhenTransitionIsValid() {
     UUID uuid = UUID.randomUUID();
     LoanApplicationModel model = new LoanApplicationModel();
-    model.setStatus(LoanStatus.PENDING);
+    ReflectionTestUtils.setField(model, "status", LoanStatus.PENDING);
 
     UpdateLoanApplicationStatusRequest request =
         new UpdateLoanApplicationStatusRequest(uuid, LoanStatus.APPROVED);
@@ -61,7 +62,7 @@ class UpdateLoanApplicationStatusHandlerTest {
   void handle_ShouldThrowException_WhenTransitionIsInvalid() {
     UUID uuid = UUID.randomUUID();
     LoanApplicationModel model = new LoanApplicationModel();
-    model.setStatus(LoanStatus.PENDING);
+    ReflectionTestUtils.setField(model, "status", LoanStatus.PENDING);
 
     UpdateLoanApplicationStatusRequest request =
         new UpdateLoanApplicationStatusRequest(uuid, LoanStatus.PENDING); // INVALID

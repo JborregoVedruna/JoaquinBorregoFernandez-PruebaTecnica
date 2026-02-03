@@ -14,6 +14,7 @@ public class Examples {
   // -----------------------------------------------------------------------------------------------
 
   public static final String RAW_LOAN_UUID = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+  public static final String RAW_LOAN_STATUS = "PENDING";
   public static final String RAW_APPLICANT_DNI = "12345678Z";
   public static final String RAW_APPLICANT_NAME = "Alejandro Garcia";
   public static final String RAW_AMOUNT = "15000.00";
@@ -41,6 +42,12 @@ public class Examples {
    * UUID de ejemplo para una solicitud de préstamo. Valor: {@value #LOAN_APPLICATION_UUID_SAMPLE}
    */
   public static final String LOAN_APPLICATION_UUID_SAMPLE = RAW_LOAN_UUID;
+
+  /**
+   * Estado de ejemplo para una solicitud de préstamo. Valor: {@value
+   * #LOAN_APPLICATION_STATUS_SAMPLE}
+   */
+  public static final String LOAN_APPLICATION_STATUS_SAMPLE = RAW_LOAN_STATUS;
 
   /** DNI de ejemplo para un solicitante. Valor: {@value #APPLICANT_DNI_SAMPLE} */
   public static final String APPLICANT_DNI_SAMPLE = RAW_APPLICANT_DNI;
@@ -170,6 +177,61 @@ public class Examples {
                         "applicantDni": "87654321X",
                         "createdDate": "2026-01-24T12:05:00",
                         "status": "APPROVED"
+                    }
+                ],
+                "pageable": {
+                    "pageNumber": 0,
+                    "pageSize": 10,
+                    "sort": {
+                        "empty": false,
+                        "unsorted": false,
+                        "sorted": true
+                    },
+                    "offset": 0,
+                    "unpaged": false,
+                    "paged": true
+                },
+                "last": true,
+                "totalElements": 5,
+                "totalPages": 1,
+                "first": true,
+                "size": 10,
+                "number": 0,
+                "sort": {
+                    "empty": false,
+                    "unsorted": false,
+                    "sorted": true
+                },
+                "numberOfElements": 5,
+                "empty": false
+            }
+            """;
+
+  /**
+   * Cuerpo JSON de ejemplo para la respuesta (Response) que contiene una página ({@code Page}) de
+   * resultados de solicitudes de préstamo por estado.
+   */
+  public static final String LOAN_APPLICATION_STATUS_PAGE_SAMPLE =
+      """
+            {
+                "content": [
+                    {
+                        "uuid": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        "applicantName": "Alejandro Garcia",
+                        "requestedAmount": 15000.00,
+                        "currency": "EUR",
+                        "applicantDni": "12345678Z",
+                        "createdDate": "2026-01-24T12:00:00",
+                        "status": "PENDING"
+                    },
+                    {
+                        "uuid": "72e19c0a-3d2b-4f9e-8c4d-6192a5b8c3d1",
+                        "applicantName": "Maria Lopez",
+                        "requestedAmount": 4500.50,
+                        "currency": "USD",
+                        "applicantDni": "87654321X",
+                        "createdDate": "2026-01-24T12:05:00",
+                        "status": "PENDING"
                     }
                 ],
                 "pageable": {
